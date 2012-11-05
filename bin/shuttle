@@ -4,6 +4,41 @@ lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 
 require 'rubygems'
-require 'shuttle'
+require 'optparse'
+require 'shuttle/cli'
 
-puts "Shuttle v#{Shuttle::VERSION}"
+options = {
+  :path   => './shuttle.yml',
+  :target => 'production'
+}
+
+optparse = OptionParser.new do |opts|
+  opts.on('-v', '--version', 'Show version') do
+    puts "Shuttle version #{Shuttle::VERSION}"
+    exit 0
+  end
+
+  opts.on('-e', '--environment NAME', 'Deployment target environment') do |v|
+    options[:target] = v
+  end
+
+  opts.on('-f', '--file PATH', 'Configuration file path') do |v|
+    options[:path] = v
+  end
+end
+
+begin
+  optparse.parse!
+rescue OptionParser::ParseError => e
+  puts "Error: #{e.message}"
+  exit 1
+end
+
+command = ARGV.shift.to_s
+
+if command.empty?
+  puts "Error: Command required"
+  exit 1
+end
+
+Shuttle::CLI.new(command, options).run!

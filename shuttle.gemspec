@@ -13,6 +13,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec',     '~> 2.11'
   s.add_development_dependency 'simplecov', '~> 0.4'
 
+  s.add_dependency 'net-ssh', '~> 2.6.1'
+  s.add_dependency 'deploy-config', '~> 0.1.0'
+  s.add_dependency 'terminal_helpers', '~> 0.1'
+
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{|f| File.basename(f)}
