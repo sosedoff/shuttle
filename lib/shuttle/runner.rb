@@ -36,13 +36,13 @@ module Shuttle
       if integration.respond_to?(command)
         begin
           if integration.deploy_running?
-            raise DeployError, "Another deployment is running right now..."
+            integration.error "Another deployment is running right now..."
           end
           
           integration.write_lock
           integration.send(command.to_sym)
           integration.write_revision
-          
+
         rescue DeployError => err
           exit 1
         rescue Exception => err
