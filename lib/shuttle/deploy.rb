@@ -1,35 +1,49 @@
 module Shuttle
   class Deploy
-    attr_reader :config, :target
+    include TerminalHelpers
+    include Shuttle::Tasks
 
-    def initialize(config, target)
+    attr_reader :ssh
+    attr_reader :target
+    attr_reader :version
+    attr_reader :config
+
+    def initialize(config, ssh, target)
       @config = config
       @target = target
-    end
+      @ssh = ssh
 
-    def execute(command)
-      session = ssh_session(@target)
-      session.open
-
-      klass = Shuttle::Deployment.const_get(@config.app_type.capitalize)
-      integration = klass.new(@config, @target, session)
-
-      unless integration.respond_to?(:execute)
-        raise RuntimeError, "Execution method should be defined"
+      if ssh.file_exists?(version_path)
+        res = ssh.capture("cat #{version_path}")
+        @version = (res.empty? ? 1 : Integer(res) + 1).to_s
+      else
+        @version = 1
       end
-
-      integration.execute(command)
-
-      session.close
     end
 
-    # Initialize a new session instance
-    # @param target [DeployConfig::Target] target environment
-    # @return [Net::SSH::Session] ssh session for target host
-    def ssh_session(target)
-      session = Net::SSH::Session.new(target.host, target.user, target.password)
-      session.logger = Net::SSH::SessionLogger.new(STDOUT)
-      session
+    def deploy_path(path=nil)
+      [target.deploy_to, path].compact.join('/')
+    end
+
+    def shared_path(path=nil)
+      [deploy_path, 'shared', path].compact.join('/')
+    end
+
+    def current_path(path=nil)
+      [deploy_path, 'current', path].compact.join('/')
+    end
+
+    def version_path
+      deploy_path('version')
+    end
+
+    def release_path(path=nil)
+      [deploy_path, 'releases', version, path].compact.join('/')
+    end
+
+    def error(message)
+      log("ERROR: #{message}", 'error')
+      raise DeployError, message
     end
   end
 end

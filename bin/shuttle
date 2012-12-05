@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 
 require 'rubygems'
 require 'optparse'
-require 'shuttle/cli'
+require 'shuttle'
 
 options = {
   :path   => './shuttle.yml',
@@ -34,11 +34,23 @@ rescue OptionParser::ParseError => e
   exit 1
 end
 
-command = ARGV.shift.to_s
-
-if command.empty?
-  puts "Error: Command required"
+case ARGV.size
+when 2
+  options[:target] = ARGV.shift
+  command = ARGV.shift
+when 1
+  command = ARGV.shift
+else
+  puts "Command required"
   exit 1
 end
 
-Shuttle::CLI.new(command, options).run!
+begin
+  runner = Shuttle::Runner.new(
+    File.expand_path(options[:path]),
+    options[:target]
+  )
+  runner.execute(command)
+rescue Shuttle::ConfigError => err
+  puts "Error: #{err.message}."
+end

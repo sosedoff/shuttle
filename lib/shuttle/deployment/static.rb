@@ -1,9 +1,5 @@
-module Shuttle::Deployment
-  class Static < Shuttle::Deployment::Base
-    def execute(command)
-      self.send(command.to_sym)
-    end
-
+module Shuttle
+  class Static < Shuttle::Deploy
     def deploy
       setup
       update_code
