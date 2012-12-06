@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'deploy-config',    '~> 0.1.0'
   s.add_dependency 'terminal_helpers', '~> 0.1'
   s.add_dependency 'chronic_duration', '~> 0.9'
+  s.add_dependency 'hashr',            '~> 0.0.22'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
