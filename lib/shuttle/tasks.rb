@@ -21,12 +21,16 @@ module Shuttle
         error "Git is not installed"
       end
 
+      if config.app.git.nil?
+        error "Git source url is not defined. Please define :git option first"
+      end
+
       if ssh.directory_exists?(deploy_path('scm'))
         log "Updating to the latest code"
         ssh.run "cd #{deploy_path('scm')} && git pull"
       else
         log "Getting latest code" 
-        res = ssh.run "cd #{deploy_path} && git clone --depth 10 --recursive --quiet #{config.git} scm"
+        res = ssh.run "cd #{deploy_path} && git clone --depth 10 --recursive --quiet #{config.app.git} scm"
         if res.failure?
           error "Unable to get code. Reason: #{res.output}"
         end
@@ -83,6 +87,10 @@ module Shuttle
 
     def deploy_running?
       ssh.file_exists?("#{deploy_path}/.lock")
+    end
+
+    def connect
+      exec("ssh #{target.user}@#{target.host}")
     end
   end
 end
