@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version     = Shuttle::VERSION
   s.summary     = "Deployment automation tool"
   s.description = "To be added"
-  s.homepage    = "Project homepage"
+  s.homepage    = "https://github.com/sosedoff/shuttle"
   s.authors     = ["Dan Sosedoff"]
   s.email       = ["dan.sosedoff@gmail.com"]
   

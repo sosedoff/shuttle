@@ -13,14 +13,7 @@ module Shuttle
     end
 
     def execute(command)
-      @config = DeployConfig.load_file(config_path)
-
-      begin
-        @config.parse!
-      rescue Exception => ex
-        raise ConfigError, ex.message
-      end
-
+      @config = Hashr.new(YAML.load_file(config_path))
       server = @config.targets[target]
 
       if server.nil?
@@ -30,7 +23,7 @@ module Shuttle
       ssh = Net::SSH::Session.new(server.host, server.user, server.password)
       ssh.open
 
-      klass = Shuttle.const_get(config.app_type.capitalize)
+      klass = Shuttle.const_get(config.app.strategy.capitalize)
       integration = klass.new(config, ssh, server)
 
       command.gsub!(/:/,'_')
@@ -56,7 +49,6 @@ module Shuttle
           # NOOP
           exit_code = 0
         rescue Exception => err
-          puts err.class
           integration.cleanup_release
           integration.log("ERROR: #{err.message}", 'error')
           exit_code = 1
@@ -65,7 +57,8 @@ module Shuttle
         end
 
         if exit_code == 0
-          duration = ChronicDuration.output((Time.now - time_start).round(2), :format => :short)
+          diff = (Float(Time.now - time_start) * 100).round / 100
+          duration = ChronicDuration.output(diff, :format => :short)
           puts "\nRun time: #{duration}\n"
         end
 

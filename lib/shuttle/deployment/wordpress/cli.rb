@@ -28,9 +28,7 @@ module Shuttle
     def plugin_install(name)
       log "Installing wordpress plugin: #{name}"
       res = ssh.run("cd #{release_path} && wp plugin install #{name}")
-      if res.success?
-        log "Plugin installed: #{name}"
-      else
+      if !res.success?
         error "Unable to install plugin '#{name}'. Reason: #{res.output}"
       end
     end

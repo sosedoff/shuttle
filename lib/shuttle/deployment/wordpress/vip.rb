@@ -50,7 +50,7 @@ module Shuttle
     end
 
     def vip_get_config
-      data = config.original_data.wordpress.vip
+      data = config.wordpress.vip
       if data.nil?
        error "Please add VIP credentials to config."
       end

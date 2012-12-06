@@ -9,7 +9,7 @@ module Shuttle
     include WordpressVip
 
     def setup
-      if !config.original_data.wordpress
+      if !config.wordpress
         error "Please add :wordpress section to your config"
       end
 
@@ -32,6 +32,8 @@ module Shuttle
         vip_install if !vip_installed?
         vip_link
       end
+
+      check_plugins
 
       link_release
     end
@@ -65,10 +67,23 @@ module Shuttle
       ssh.run("ln -s #{shared_path('wp-uploads')} #{release_path('wp-content/uploads')}")
     end
 
+    def check_plugins
+      plugins = config.wordpress.plugins
+      if plugins
+        if plugins.kind_of?(Array)
+          plugins.each do |name|
+            plugin_install(name)
+          end
+        else
+          error "Config file has invalid plugins section"
+        end
+      end
+    end
+
     def checkout_theme
-      if config.original_data.wordpress
-        if config.original_data.wordpress.theme
-          checkout_code("wp-content/themes/#{config.original_data.wordpress.theme}")
+      if config.wordpress
+        if config.wordpress.theme
+          checkout_code("wp-content/themes/#{config.wordpress.theme}")
         else
           error "Theme name is not defined."
         end
