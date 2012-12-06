@@ -1,9 +1,16 @@
+require 'logger'
+
 module Shuttle
   class Runner
+    attr_reader :options
     attr_reader :config_path
     attr_reader :config, :target
 
-    def initialize(config_path, target)
+    def initialize(options)
+      @options = options
+      @config_path = File.expand_path(options[:path])
+      @target = options[:target]
+
       if !File.exists?(config_path)
         raise ConfigError, "Config file #{config_path} does not exist"
       end
@@ -26,6 +33,11 @@ module Shuttle
       end
 
       ssh = Net::SSH::Session.new(server.host, server.user, server.password)
+
+      if options[:log]
+        ssh.logger = Logger.new(STDOUT)
+      end
+
       ssh.open
 
       klass = Shuttle.const_get(strategy.capitalize)

@@ -9,7 +9,8 @@ require 'shuttle'
 
 options = {
   :path   => './shuttle.yml',
-  :target => 'production'
+  :target => 'production',
+  :log    => false
 }
 
 optparse = OptionParser.new do |opts|
@@ -20,6 +21,10 @@ optparse = OptionParser.new do |opts|
 
   opts.on('-e', '--environment NAME', 'Deployment target environment') do |v|
     options[:target] = v
+  end
+
+  opts.on('-d', '--debug', 'Enable debugging') do
+    options[:log] = true
   end
 
   opts.on('-f', '--file PATH', 'Configuration file path') do |v|
@@ -46,10 +51,7 @@ else
 end
 
 begin
-  runner = Shuttle::Runner.new(
-    File.expand_path(options[:path]),
-    options[:target]
-  )
+  runner = Shuttle::Runner.new(options)
   runner.execute(command.dup)
 rescue Shuttle::ConfigError => err
   puts "Error: #{err.message}."
