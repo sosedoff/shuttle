@@ -14,8 +14,13 @@ module Shuttle
 
     def execute(command)
       @config = Hashr.new(YAML.load_file(config_path))
-      server = @config.targets[target]
 
+      strategy = config.app.strategy
+      if strategy.nil?
+        raise ConfigError, "Invalid strategy: #{strategy}"
+      end
+
+      server = @config.targets[target]
       if server.nil?
         raise ConfigError, "Target #{target} does not exist"
       end
@@ -23,7 +28,7 @@ module Shuttle
       ssh = Net::SSH::Session.new(server.host, server.user, server.password)
       ssh.open
 
-      klass = Shuttle.const_get(config.app.strategy.capitalize)
+      klass = Shuttle.const_get(strategy.capitalize)
       integration = klass.new(config, ssh, server)
 
       command.gsub!(/:/,'_')
