@@ -3,22 +3,22 @@ require 'shuttle/deployment/wordpress/cli'
 require 'shuttle/deployment/wordpress/vip'
 
 module Shuttle
-  class Wordpress < Deploy
+  class Wordpress < Php
     include WordpressCli
     include WordpressCore
     include WordpressVip
 
     def setup
       if !config.original_data.wordpress
-        error "Wordpress section of config is not defined"
+        error "Please add :wordpress section to your config"
       end
 
       super
 
       setup_shared_dirs
       check_dependencies
-      install_cli if !cli_installed?
-      install_core if !core_installed?
+      cli_install if !cli_installed?
+      core_install if !core_installed?
       check_config
     end
 
@@ -37,26 +37,23 @@ module Shuttle
     end
 
     def check_dependencies
-      log "Checking dependencies..."
-
-      if ssh.run("which svn").failure?
-        log "Subversion is missing. Installing..."
+      if !svn_installed?
+        log "Installing subversion"
         if ssh.run("sudo apt-get install -y subversion").success?
-          log "Subversion is installed"
+          log "Subversion installed"
         end
-      else
-        log "Subversion is already installed"
       end
     end
 
     def setup_shared_dirs
       ssh.run("mkdir -p #{shared_path('wp-uploads')}")
       ssh.run("mkdir -p #{shared_path('wp-core')}")
+      ssh.run("mkdir -p #{shared_path('wp-plugins')}")
     end
 
     def check_config
       if !ssh.file_exists?(shared_path('wp-config.php'))
-        error "Config is missing at 'shared/wp-config.php'. Please create it first."
+        error "Wordpress config is missing. Please create file 'shared/wp-config.php'"
       end
     end
 

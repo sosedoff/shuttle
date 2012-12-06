@@ -26,7 +26,7 @@ module Shuttle
     end
 
     def vip_install
-      log "Wordpress VIP is not found. Installing..."
+      log "Installing wordpress VIP"
 
       vip = vip_get_config
 
@@ -40,9 +40,7 @@ module Shuttle
 
       cmd = "svn co #{options}"
 
-      res = ssh.run(cmd) do |buff|
-        print(buff)
-      end
+      res = ssh.run(cmd, &method(:stream_output))
 
       if res.success?
         log "Wordpress VIP installed"

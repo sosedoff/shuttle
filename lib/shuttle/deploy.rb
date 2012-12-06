@@ -1,7 +1,7 @@
 module Shuttle
   class Deploy
-    include TerminalHelpers
     include Shuttle::Tasks
+    include Shuttle::Helpers
 
     attr_reader :ssh
     attr_reader :target
@@ -39,11 +39,6 @@ module Shuttle
 
     def release_path(path=nil)
       [deploy_path, 'releases', version, path].compact.join('/')
-    end
-
-    def error(message)
-      log("ERROR: #{message}", 'error')
-      raise DeployError, message
     end
   end
 end

@@ -32,8 +32,14 @@ module Shuttle
 
       klass = Shuttle.const_get(config.app_type.capitalize)
       integration = klass.new(config, ssh, server)
+
+      command.gsub!(/:/,'_')
+      exit_code = 0
+      puts "\n"
       
       if integration.respond_to?(command)
+        time_start = Time.now
+
         begin
           if integration.deploy_running?
             integration.error "Another deployment is running right now..."
@@ -44,13 +50,28 @@ module Shuttle
           integration.write_revision
 
         rescue DeployError => err
-          exit 1
+          integration.cleanup_release
+          exit_code = 1
+        rescue SystemExit
+          # NOOP
+          exit_code = 0
         rescue Exception => err
+          puts err.class
+          integration.cleanup_release
           integration.log("ERROR: #{err.message}", 'error')
-          exit 1
-        ensure 
+          exit_code = 1
+        ensure
           integration.release_lock
         end
+
+        if exit_code == 0
+          duration = ChronicDuration.output((Time.now - time_start).round(2), :format => :short)
+          puts "\nRun time: #{duration}\n"
+        end
+
+        puts "\n"
+        exit(exit_code)
+
       else
         raise ConfigError, "Invalid command: #{command}"
       end

@@ -6,8 +6,9 @@ module Shuttle
       ssh.run("which wp").success?
     end
 
-    def install_cli
-      log "Installing CLI"
+    def cli_install
+      log "Installing wordpress CLI"
+      
       path = '/tmp/install'
 
       ssh.run_multiple([
@@ -17,10 +18,20 @@ module Shuttle
       ])
 
       if cli_installed?
-        log "CLI installed."
+        log "Wordpress CLI installed"
         ssh.run("rm -rf /tmp/install")
       else
-        error "Unable to install CLI."
+        error "Unable to install wordpress CLI"
+      end
+    end
+
+    def plugin_install(name)
+      log "Installing wordpress plugin: #{name}"
+      res = ssh.run("cd #{release_path} && wp plugin install #{name}")
+      if res.success?
+        log "Plugin installed: #{name}"
+      else
+        error "Unable to install plugin '#{name}'. Reason: #{res.output}"
       end
     end
   end

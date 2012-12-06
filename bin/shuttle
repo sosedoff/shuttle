@@ -50,7 +50,7 @@ begin
     File.expand_path(options[:path]),
     options[:target]
   )
-  runner.execute(command)
+  runner.execute(command.dup)
 rescue Shuttle::ConfigError => err
   puts "Error: #{err.message}."
 end

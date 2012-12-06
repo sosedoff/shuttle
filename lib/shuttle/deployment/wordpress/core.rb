@@ -5,7 +5,12 @@ module Shuttle
       !ssh.capture("ls #{shared_path('wp-core')}").empty?
     end
 
-    def install_core
+    def core_install
+      if core_installed?
+        log "Removing existing wp-core"
+        ssh.run("cd #{shared_path} && rm -rf wp-core")
+      end
+
       log "Installing wordpress core"
 
       if ssh.run("cd #{shared_path('wp-core')} && wp core download").success?
