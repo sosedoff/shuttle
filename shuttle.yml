@@ -1,0 +1,21 @@
+app:
+  name: rare
+  strategy: wordpress
+  git: git@gitslice.com:rare-media.git
+
+targets:
+  production:
+    host: doejocloud.com
+    user: vm-rare
+    password:
+    deploy_to: /home/apps/www
+
+wordpress:
+  theme: rare-media
+  vip: 
+    user: rinatkhaziev
+    password: doejop4ss
+  plugins:
+    - feedweb
+    - jm-twitter-cards
+    - post-meta
