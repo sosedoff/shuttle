@@ -9,17 +9,16 @@ module Shuttle
     def cli_install
       log "Installing wordpress CLI"
       
-      path = '/tmp/install'
+      path = '/usr/local/share/wp-cli'
 
       ssh.run_multiple([
-        "mkdir -p #{path}",
-        "cd #{path} && git clone --recursive --quiet #{CLI_GIT}",
+        "sudo mkdir -p #{path}",
+        "cd #{path} && sudo git clone --recursive --quiet #{CLI_GIT}",
         "cd #{path}/wp-cli && sudo utils/dev-build"
       ])
 
       if cli_installed?
         log "Wordpress CLI installed"
-        ssh.run("rm -rf /tmp/install")
       else
         error "Unable to install wordpress CLI"
       end
