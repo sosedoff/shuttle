@@ -1,4 +1,3 @@
-require 'deploy-config'
 require 'terminal_helpers'
 require 'net/ssh/session'
 require 'chronic_duration'
