@@ -1,17 +1,22 @@
 app:
-  name: rare
+  name: bikeshare
   strategy: wordpress
-  git: git@gitslice.com:rare-media.git
+  git: git@gitslice.com:bikeshare.git
 
 targets:
   production:
     host: doejocloud.com
-    user: vm-rare
+    user: vm-bikeshare
     password:
     deploy_to: /home/apps/www
 
 wordpress:
-  theme: rare-media
+  theme: bikeshare
+  mysql:
+    host: 192.168.1.3
+    user: vm-bikeshare
+    password: vm-bikeshare
+    database: vm-bikeshare
   vip: 
     user: rinatkhaziev
     password: doejop4ss

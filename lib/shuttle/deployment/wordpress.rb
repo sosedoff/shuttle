@@ -53,9 +53,31 @@ module Shuttle
       ssh.run("mkdir -p #{shared_path('wp-plugins')}")
     end
 
+    def generate_config
+      mysql = config.wordpress.mysql
+      if mysql.nil?
+        error "Missing :mysql section of the config."
+      end
+
+      cmd = [
+        "wp core config",
+        "--dbname=#{mysql.database}",
+        "--dbhost=#{mysql.host}",
+        "--dbuser=#{mysql.user}",
+        "--dbpass=#{mysql.password}"
+      ].join(' ')
+
+      res = ssh.run("cd #{shared_path('wp-core')} && #{cmd}")
+      if res.success?
+        log "A new wordpress config has been generated"
+      else
+        error "Unable to generate config"
+      end
+    end
+
     def check_config
       if !ssh.file_exists?(shared_path('wp-config.php'))
-        error "Wordpress config is missing. Please create file 'shared/wp-config.php'"
+        log "Creating wordpress config at 'shared/wp-config.php'"
       end
     end
 
@@ -63,7 +85,7 @@ module Shuttle
       log "Linking shared data"
 
       ssh.run("cp -a #{shared_path('wp-core')} #{release_path}")
-      ssh.run("cp #{shared_path('wp-config.php')} #{release_path('wp-config.php')}")
+      #ssh.run("cp #{shared_path('wp-config.php')} #{release_path('wp-config.php')}")
       ssh.run("ln -s #{shared_path('wp-uploads')} #{release_path('wp-content/uploads')}")
     end
 
