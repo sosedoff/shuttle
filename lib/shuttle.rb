@@ -16,10 +16,12 @@ module Shuttle
   autoload :Static,    'shuttle/deployment/static'
   autoload :Php,       'shuttle/deployment/php'
   autoload :Wordpress, 'shuttle/deployment/wordpress'
+  autoload :Rack,      'shuttle/deployment/rack'
 
   module Support
     autoload :Bundler, 'shuttle/support/bundler'
     autoload :Foreman, 'shuttle/support/foreman'
     autoload :RVM,     'shuttle/support/rvm'
+    autoload :Thin,    'shuttle/support/thin'
   end
 end

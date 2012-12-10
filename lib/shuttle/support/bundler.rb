@@ -24,7 +24,7 @@ module Shuttle
       end
 
       def bundle_install
-        cmd = "bundle install --path #{bundle_path} --binstubs --deployment"
+        cmd = "bundle install --quiet --path #{bundle_path} --binstubs --deployment"
 
         res = ssh.run("cd #{release_path} && #{cmd}", &method(:stream_output))
 

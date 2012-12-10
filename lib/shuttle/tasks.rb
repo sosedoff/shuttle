@@ -4,9 +4,14 @@ module Shuttle
       log "Preparing application structure"
 
       ssh.run "mkdir -p #{deploy_path}"
-      %w(releases shared backups tmp).each do |dir|
-        ssh.run "mkdir -p #{deploy_path(dir)}"
-      end
+
+      ssh.run "mkdir -p #{deploy_path('releases')}"
+      ssh.run "mkdir -p #{deploy_path('backups')}"
+      ssh.run "mkdir -p #{deploy_path('shared')}"
+
+      ssh.run "mkdir -p #{shared_path('tmp')}"
+      ssh.run "mkdir -p #{shared_path('pids')}"
+      ssh.run "mkdir -p #{shared_path('log')}"
     end
 
     def deploy
