@@ -41,7 +41,7 @@ module Shuttle
       ssh.open
 
       klass = Shuttle.const_get(strategy.capitalize)
-      integration = klass.new(config, ssh, server) 
+      integration = klass.new(config, ssh, server, target) 
 
       command.gsub!(/:/,'_')
       exit_code = 0

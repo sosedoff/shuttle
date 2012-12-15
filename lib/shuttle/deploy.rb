@@ -5,13 +5,15 @@ module Shuttle
 
     attr_reader :ssh
     attr_reader :target
+    attr_reader :environment
     attr_reader :version
     attr_reader :config
 
-    def initialize(config, ssh, target)
+    def initialize(config, ssh, target, environment)
       @config = config
       @target = target
       @ssh = ssh
+      @environment = environment
 
       if ssh.file_exists?(version_path)
         res = ssh.capture("cat #{version_path}")

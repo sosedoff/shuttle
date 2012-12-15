@@ -5,16 +5,16 @@ module Shuttle
     end
 
     def thin_env
-      "production"
+      environment
     end
 
     def thin_options
       [
-        "-a 127.0.0.1",
+        "-a 0.0.0.0",
         "-p #{thin_port}",
         "-e #{thin_env}",
         "-l #{shared_path('log/thin.log')}",
-        "-p #{shared_path('pids/thin.pid')}",
+        "-P #{shared_path('pids/thin.pid')}",
         "-d"
       ].join(' ')
     end
@@ -42,11 +42,11 @@ module Shuttle
     def thin_restart
       log "Restarting thin"
 
-      if ssh.run("cd #{release_path} && ./bin/thin #{thin_options} restart").success?
-        log "Thin restarted"
-      else
-        error "Unable to restart thin"
+      if ssh.file_exists?(shared_path('pids/thin.pid'))
+        thin_stop
       end
+
+      thin_start
     end
   end
 end
