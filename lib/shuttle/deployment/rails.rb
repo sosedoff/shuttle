@@ -37,7 +37,10 @@ module Shuttle
       checkout_code
       bundle_install
 
+      log "Migrating database"
       rake 'db:migrate'
+
+      log "Precompilig assets"
       rake 'assets:precompile'
       
       thin_restart

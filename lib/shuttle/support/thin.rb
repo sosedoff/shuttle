@@ -22,21 +22,19 @@ module Shuttle
     def thin_start
       log "Starting thin"
 
-      if ssh.run("cd #{release_path} && ./bin/thin #{thin_options} start").success?
+      res = ssh.run("cd #{release_path} && ./bin/thin #{thin_options} start")
+
+      if res.success?
         log "Thin started"
       else
-        error "Unable to start thin"
+        error "Unable to start thin: #{res.output}"
       end
     end
 
     def thin_stop
-      log "Starting thin"
+      log "Stopping thin"
 
-      if ssh.run("cd #{release_path} && ./bin/thin #{thin_options} start").success?
-        log "Thin stop"
-      else
-        error "Unable to stop thin"
-      end
+      ssh.run("cd #{release_path} && ./bin/thin #{thin_options} stop")
     end
 
     def thin_restart
