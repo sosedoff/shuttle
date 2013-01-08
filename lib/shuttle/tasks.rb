@@ -19,6 +19,11 @@ module Shuttle
       update_code
       checkout_code
       link_release
+      cleanup_releases
+    end
+
+    def keep_releases
+      5
     end
 
     def update_code
@@ -82,6 +87,13 @@ module Shuttle
       if ssh.directory_exists?(release_path)
         ssh.run("rm -rf #{release_path}")
       end
+    end
+
+    def cleanup_releases
+      ssh.run("cd #{deploy_path('releases')}")
+      ssh.run("count=`ls -1d [0-9]* | sort -rn | wc -l`")
+      ssh.run("remove=$((count > 5 ? count - #{keep_releases} : 0))}")
+      ssh.run("ls -1d [0-9]* | sort -rn | tail -n $remove | xargs rm -rf {}")
     end
 
     def write_revision

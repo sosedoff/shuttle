@@ -47,6 +47,7 @@ module Shuttle
 
       link_shared_paths
       link_release
+      cleanup_releases
     end
 
     def link_shared_paths
