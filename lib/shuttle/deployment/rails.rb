@@ -40,7 +40,7 @@ module Shuttle
       log "Migrating database"
       rake 'db:migrate'
 
-      log "Precompilig assets"
+      log "Precompiling assets"
       rake 'assets:precompile'
       
       thin_restart
