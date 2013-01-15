@@ -9,7 +9,7 @@ module Shuttle
     include WordpressVip
 
     def setup
-      if !config.wordpress
+      if config.wordpress.nil?
         error "Please add :wordpress section to your config"
       end
 
@@ -33,6 +33,10 @@ module Shuttle
         vip_link
       end
 
+      if !site_installed?
+        site_install
+      end
+
       check_plugins
 
       link_release
@@ -48,9 +52,16 @@ module Shuttle
     end
 
     def setup_shared_dirs
-      ssh.run("mkdir -p #{shared_path('wp-uploads')}")
-      ssh.run("mkdir -p #{shared_path('wp-core')}")
-      ssh.run("mkdir -p #{shared_path('wp-plugins')}")
+      dirs = [
+        'wordpress',
+        'wordpress/uploads',
+        'wordpress/core',
+        'wordpress/plugins'
+      ]
+
+      dirs.each do |path|
+        ssh.run("mkdir -p #{shared_path(path)}")
+      end
     end
 
     def generate_config
@@ -67,7 +78,7 @@ module Shuttle
         "--dbpass=#{mysql.password}"
       ].join(' ')
 
-      res = ssh.run("cd #{shared_path('wp-core')} && #{cmd}")
+      res = ssh.run("cd #{core_path} && #{cmd}")
       if res.success?
         log "A new wordpress config has been generated"
       else
@@ -77,16 +88,44 @@ module Shuttle
 
     def check_config
       if !ssh.file_exists?(shared_path('wp-config.php'))
-        log "Creating wordpress config at 'shared/wp-config.php'"
+        error "Wordpress config is missing"
+        #log "Creating wordpress config at 'shared/wp-config.php'"
+        #generate_config
+      end
+    end
+
+    def site_installed?
+      ssh.run("cd #{release_path} && wp").success?
+    end
+
+    def site_install
+      if config.wordpress.site
+        site = config.wordpress.site
+
+        cmd = [
+          "wp core install",
+          "--url=#{site.url}",
+          "--title=#{site.title}",
+          "--admin_name=#{site.admin_name}",
+          "--admin_email=#{site.admin_email}",
+          "--admin_password=#{site.admin_password}"
+        ].join(' ')
+
+        result = ssh.run("cd #{release_path} && #{cmd}")
+        if result.failure?
+          error "Failed to setup site. #{result.output}"
+        end
+      else
+        error "Please define :site section"
       end
     end
 
     def link_shared_data
       log "Linking shared data"
 
-      ssh.run("cp -a #{shared_path('wp-core')} #{release_path}")
-      #ssh.run("cp #{shared_path('wp-config.php')} #{release_path('wp-config.php')}")
-      ssh.run("ln -s #{shared_path('wp-uploads')} #{release_path('wp-content/uploads')}")
+      ssh.run("cp -a #{core_path} #{release_path}")
+      ssh.run("cp #{shared_path('wp-config.php')} #{release_path('wp-config.php')}")
+      ssh.run("ln -s #{shared_path('wordpress/uploads')} #{release_path('wp-content/uploads')}")
     end
 
     def check_plugins

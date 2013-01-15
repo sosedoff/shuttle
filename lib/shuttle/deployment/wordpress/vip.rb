@@ -2,26 +2,38 @@ module Shuttle
   module WordpressVip
     VIP_URL = "https://vip-svn.wordpress.com/plugins/"
 
+    # Get wordpress VIP shared path
+    # @return [String]
     def vip_path
-      shared_path('wp-vip')
+      @vip_path ||= shared_path('wordpress/vip')
     end
 
+    # Check if wordpress VIP is required
+    # @return [Boolean]
     def vip_required?
-      result = false
-      res = ssh.run("cd #{release_path} && wp")
-      if res.failure?
-        result = res.output.include?('plugins/vip-init.php') &&
-                 res.output.include?('Failed opening required')
+      required = false
+
+      result = ssh.run("cd #{release_path} && wp")
+      if result.failure?
+        required = result.output.include?('plugins/vip-init.php') &&
+                   result.output.include?('Failed opening required')
       end
-      result
+
+      required
     end
 
+    # Check if wordpress VIP is installed
+    # @return [Boolean]
     def vip_installed?
       ssh.directory_exists?(vip_path)
     end
 
+    # Update wordpress VIP
     def vip_update
-      ssh.run("rm -rf #{vip_path}") if vip_installed?
+      if vip_installed?
+        ssh.run("rm -rf #{vip_path}")
+      end
+
       vip_install
     end
 

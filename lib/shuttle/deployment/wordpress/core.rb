@@ -1,23 +1,50 @@
 module Shuttle
   module WordpressCore
-    def core_installed?
-      ssh.directory_exists?(shared_path('wp-core')) &&
-      !ssh.capture("ls #{shared_path('wp-core')}").empty?
+    # Get wordpress shared core path
+    # @return [String]
+    def core_path
+      @core_path ||= shared_path('wordpress/core')
     end
 
-    def core_install
-      if core_installed?
-        log "Removing existing wp-core"
-        ssh.run("cd #{shared_path} && rm -rf wp-core")
+    # Check if wordpress core is installed
+    # @return [Boolean]
+    def core_installed?
+      ssh.directory_exists?(core_path) &&
+      !ssh.capture("ls #{core_path}").empty?
+    end
+
+    # Install wordpress shared core
+    # @param [Boolean] overwrite existing code
+    # @return [Boolean]
+    def core_install(overwrite=true)
+      if core_installed? && overwrite == true
+        core_remove
       end
 
       log "Installing wordpress core"
 
-      if ssh.run("cd #{shared_path('wp-core')} && wp core download").success?
+      unless ssh.directory_exists?(core_path)
+        ssh.run("mkdir -p #{core_path}")
+      end
+
+      result = ssh.run("cd #{core_path} && wp core download")
+
+      if result.success?
         log "Wordpress core installed"
       else
-        log "Unable to install wordpress core"
+        error "Unable to install wordpress core: #{result.output}"
       end
+    end
+
+    # Remove wordpress shared core
+    # @return [Boolean]
+    def core_remove
+      if ssh.directory_exists?(core_path)
+        log "Removing wordpress shared core"
+        ssh.run("rm -rf #{core_path}")
+      end
+
+      ssh.directory_exists?(core_path)
     end
   end
 end
