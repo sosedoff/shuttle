@@ -80,7 +80,8 @@ module Shuttle
 
     def vip_link
       ssh.run("mkdir -p #{release_path}/wp-content/themes/vip")
-      result = ssh.run("ln -s #{shared_path('wp-vip')} #{release_path('wp-content/themes/vip/plugins')}")
+      result = ssh.run("cp -a #{vip_path} #{release_path('wp-content/themes/vip/plugins')}")
+      
       if result.success?
         log "Wordpress VIP is linked"
       else
