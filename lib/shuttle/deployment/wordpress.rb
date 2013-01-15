@@ -89,8 +89,8 @@ module Shuttle
     def check_config
       if !ssh.file_exists?(shared_path('wp-config.php'))
         error "Wordpress config is missing"
-        #log "Creating wordpress config at 'shared/wp-config.php'"
-        #generate_config
+        log "Creating wordpress config at 'shared/wp-config.php'"
+        generate_config
       end
     end
 
