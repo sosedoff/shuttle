@@ -8,6 +8,7 @@ require 'shuttle/version'
 require 'shuttle/errors'
 
 module Shuttle
+  autoload :Session,   'shuttle/session'
   autoload :Runner,    'shuttle/runner'
   autoload :Deploy,    'shuttle/deploy'
   autoload :Tasks,     'shuttle/tasks'

@@ -7,9 +7,9 @@ module Shuttle
     attr_reader :config, :target
 
     def initialize(options)
-      @options = options
+      @options     = options
       @config_path = File.expand_path(options[:path])
-      @target = options[:target]
+      @target      = options[:target]
 
       if !File.exists?(config_path)
         raise ConfigError, "Config file #{config_path} does not exist"
