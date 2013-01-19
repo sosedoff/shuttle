@@ -36,9 +36,7 @@ module Shuttle
       update_code
       checkout_code
       bundle_install
-
-      log "Migrating database"
-      rake 'db:migrate'
+      migrate_database
 
       log "Precompiling assets"
       rake 'assets:precompile'
@@ -48,6 +46,30 @@ module Shuttle
       link_shared_paths
       link_release
       cleanup_releases
+    end
+
+    def migrate_database
+      return if !ssh.file_exists?(release_path('db/schema.rb'))
+
+      migrate     = true # Will migrate by default
+      schema      = ssh.read_file(release_path('db/schema.rb'))
+      schema_file = shared_path('schema')
+      checksum    = Digest::SHA1.hexdigest(schema)
+
+      if ssh.file_exists?(schema_file)
+        old_checksum = ssh.read_file(schema_file).strip
+        if old_checksum == checksum
+          migrate = false
+        end
+      end
+
+      if migrate == true
+        log "Migrating database"
+        rake 'db:migrate'
+        ssh.run("echo #{checksum} > #{schema_file}")
+      else
+        log "Database migration skipped"
+      end
     end
 
     def link_shared_paths

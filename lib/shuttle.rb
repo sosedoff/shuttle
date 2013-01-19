@@ -3,6 +3,7 @@ require 'net/ssh/session'
 require 'chronic_duration'
 require 'hashr'
 require 'yaml'
+require 'digest/sha1'
 
 require 'shuttle/version'
 require 'shuttle/errors'
