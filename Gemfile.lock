@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    shuttle (0.1.3)
+    shuttle (0.1.4)
       chronic_duration (~> 0.9)
       hashr (~> 0.0.22)
       net-ssh (~> 2.6)
