@@ -46,6 +46,8 @@ module Shuttle
       command.gsub!(/:/,'_')
       exit_code = 0
       puts "\n"
+
+      integration.log "Connected to #{server.user}@#{server.host}"
       
       if integration.respond_to?(command)
         time_start = Time.now
@@ -54,7 +56,7 @@ module Shuttle
           if integration.deploy_running?
             integration.error "Another deployment is running right now..."
           end
-          
+
           integration.write_lock
           integration.send(command.to_sym)
           integration.write_revision

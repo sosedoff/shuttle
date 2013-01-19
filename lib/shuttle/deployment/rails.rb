@@ -5,7 +5,7 @@ module Shuttle
     include Shuttle::Support::Thin
 
     def rails_env
-      ''
+      environment
     end
 
     def setup_bundler
@@ -52,8 +52,18 @@ module Shuttle
 
     def link_shared_paths
       ssh.run("mkdir -p #{release_path('tmp')}")
+      ssh.run("rm -rf #{release_path}/log")
       ssh.run("ln -s #{shared_path('pids')} #{release_path('tmp/pids')}")
       ssh.run("ln -s #{shared_path('log')} #{release_path('log')}")
+
+      if config.rails
+        if config.rails.shared_paths
+          config.rails.shared_paths.each_pair do |name, path|
+            log "Linking shared path: #{name}"
+            ssh.run("ln -s #{shared_path}/#{name} #{release_path}/#{path}")
+          end
+        end
+      end
     end
   end
 end
