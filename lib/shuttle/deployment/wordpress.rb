@@ -130,10 +130,16 @@ module Shuttle
 
     def check_plugins
       plugins = config.wordpress.plugins
+
       if plugins
         if plugins.kind_of?(Array)
-          plugins.each do |name|
-            plugin_install(name)
+          plugins.each do |p|
+            if p.kind_of?(String)
+              plugin_install(p)
+            elsif p.kind_of?(Hash)
+              name, url = p.to_a.flatten.map(&:to_s)
+              plugin_custom_install(name, url)
+            end
           end
         else
           error "Config file has invalid plugins section"
