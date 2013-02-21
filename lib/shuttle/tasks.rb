@@ -83,6 +83,7 @@ module Shuttle
       ssh.run("rm #{deploy_path}/.lock")
     end
 
+    # Delete current session release
     def cleanup_release
       if ssh.directory_exists?(release_path)
         ssh.run("rm -rf #{release_path}")

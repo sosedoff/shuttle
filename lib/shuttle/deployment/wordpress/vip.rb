@@ -11,15 +11,7 @@ module Shuttle
     # Check if wordpress VIP is required
     # @return [Boolean]
     def vip_required?
-      required = false
-
-      result = ssh.run("cd #{release_path} && wp")
-      if result.failure?
-        required = result.output.include?('plugins/vip-init.php') &&
-                   result.output.include?('Failed opening required')
-      end
-
-      required
+      !config.wordpress.vip.nil?
     end
 
     # Check if wordpress VIP is installed
