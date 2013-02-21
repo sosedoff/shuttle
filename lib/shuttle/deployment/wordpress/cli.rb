@@ -35,6 +35,23 @@ module Shuttle
       end
     end
 
+    def plugin_custom_install(name, url)
+      log "Installing custom plugin: #{name} -> #{url}"
+
+      if url.include?('.git') || url.include?('git@') || url.include?('git://')
+        ssh.run "cd #{release_path}/wp-content/plugins"
+        res = ssh.run "git clone #{url} #{name}"
+
+        if res.failure?
+          error "Unable to install plugin '#{name}'. Reason: #{res.output}"
+        end
+
+        ssh.run("rm -rf #{release_path}/wp-content/plugins/#{name}/.git")
+      else
+        error "Valid git URL is required for plugin: #{name}"
+      end
+    end
+
     # Check if wordpress plugin is installed
     # @return [Boolean]
     def plugin_installed?(name)

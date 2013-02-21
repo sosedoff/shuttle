@@ -65,8 +65,9 @@ module Shuttle
 
       log "Linking release"
 
+      # Check if `current` is a directory first
       if ssh.run("unlink #{current_path}").failure?
-        ssh.run("rm #{current_path}")
+        ssh.run("rm -rf #{current_path}")
       end
 
       ssh.run "ln -s #{release_path} #{current_path}"

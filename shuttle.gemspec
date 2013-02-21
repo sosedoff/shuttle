@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', '~> 0.4'
 
   s.add_dependency 'net-ssh',          '~> 2.6'
-  s.add_dependency 'net-ssh-session',  '~> 0.1.2'
+  s.add_dependency 'net-ssh-session',  '~> 0.1.4'
   s.add_dependency 'terminal_helpers', '~> 0.1'
   s.add_dependency 'chronic_duration', '~> 0.9'
   s.add_dependency 'hashr',            '~> 0.0.22'
