@@ -38,6 +38,7 @@ module Shuttle
       end
 
       check_plugins
+      activate_theme
 
       link_release
     end
@@ -156,6 +157,15 @@ module Shuttle
         end
       else
         error "Config does not contain 'wordpress' section"
+      end
+    end
+
+    def activate_theme
+      name = config.wordpress.theme
+      result = ssh.run("cd #{release_path} && wp theme activate #{name}")
+
+      if result.failure?
+        error "Unable to activate theme. Error: #{result.output}"
       end
     end
   end
