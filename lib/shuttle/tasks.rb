@@ -41,8 +41,27 @@ module Shuttle
       else
         log "Getting latest code" 
         res = ssh.run "cd #{deploy_path} && git clone --depth 10 --recursive --quiet #{config.app.git} scm"
+
         if res.failure?
           error "Unable to get code. Reason: #{res.output}"
+        end
+      end
+
+      branch = config.app.branch || 'master'
+
+      log "Checking out '#{branch}'"
+      result = ssh.run("cd #{deploy_path('scm')} && git checkout #{branch}")
+
+      if result.failure?
+        error "Failed to checkout #{branch}: #{result.output}"
+      end
+
+      if ssh.file_exists?("#{deploy_path('scm')}/.gitmodules")
+        log "Updating submodules"
+        result = ssh.run("cd #{deploy_path('scm')} && git submodule update --init --recursive")
+
+        if result.failure?
+          error "Failed to update submodules: #{result.output}"
         end
       end
     end
@@ -51,10 +70,13 @@ module Shuttle
       log "Checking out latest code"
 
       checkout_path = [release_path, path].compact.join('/')
-      res = ssh.run("cd #{deploy_path('scm')} && git checkout-index -f -a --prefix=#{checkout_path}/")
+      #res = ssh.run("cd #{deploy_path('scm')} && git checkout-index -f -a --prefix=#{checkout_path}/")
+      res = ssh.run("cp -a #{deploy_path('scm')} #{checkout_path}")
       
       if res.failure?
         error "Failed to checkout code. Reason: #{res.output}"
+      else
+        ssh.run("cd #{release_path} && rm -rf $(find . | grep .git)")
       end
     end
 
