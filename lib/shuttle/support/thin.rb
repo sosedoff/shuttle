@@ -10,7 +10,7 @@ module Shuttle
 
     def thin_options
       [
-        "-a 0.0.0.0",
+        "-a 127.0.0.1",
         "-p #{thin_port}",
         "-e #{thin_env}",
         "-l #{shared_path('log/thin.log')}",

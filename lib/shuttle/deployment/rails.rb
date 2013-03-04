@@ -10,10 +10,11 @@ module Shuttle
 
     def setup_bundler
       if !bundler_installed?
-        info "Bundler is missing. Installing"
-        rer = ssh.run("gem install bundler")
+        log "Bundler is missing. Installing"
+
+        res = ssh.run("sudo gem install bundler")
         if res.success?
-          info "Bundler v#{bundler_version} installed"
+          log "Bundler v#{bundler_version} installed"
         else
           error "Unable to install bundler: #{res.output}"
         end
