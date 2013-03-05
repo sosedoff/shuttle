@@ -133,5 +133,17 @@ module Shuttle
     def connect
       exec("ssh #{target.user}@#{target.host}")
     end
+
+    def execute_commands(commands=[])
+      commands.flatten.compact.uniq.each do |cmd|
+        log %{Executing "#{cmd.strip}"}
+
+        result = ssh.run("cd #{release_path} && #{cmd}")
+
+        if result.failure?
+          error "Failed: #{result.output}"
+        end
+      end
+    end
   end
 end
