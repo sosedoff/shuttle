@@ -35,6 +35,7 @@ module Shuttle
 
       if !site_installed?
         site_install
+        network_install
       end
 
       check_plugins
@@ -118,6 +119,24 @@ module Shuttle
         end
       else
         error "Please define :site section"
+      end
+    end
+
+    def network_install
+      if config.wordpress.network
+        network = config.wordpress.network
+
+        cmd = [
+          "wp core install-network",
+          "--title=#{network.title}",
+        ].join(' ')
+
+        result = ssh.run("cd #{release_path} && #{cmd}")
+        if result.failure?
+          error "Failed to setup WP network. #{result.output}"
+        end
+      else
+        log "Network section is not present in config"
       end
     end
 
