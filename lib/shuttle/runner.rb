@@ -1,4 +1,5 @@
 require 'logger'
+require 'safe_yaml'
 
 module Shuttle
   class Runner
@@ -19,8 +20,13 @@ module Shuttle
       @target = target
     end
 
+    def load_config
+      data = File.read(config_path)
+      Hashr.new(YAML.safe_load(data))
+    end
+
     def execute(command)
-      @config = Hashr.new(YAML.load_file(config_path))
+      @config = load_config
 
       strategy = config.app.strategy
       if strategy.nil?
