@@ -1,7 +1,7 @@
 module Shuttle
   module Helpers
     def log(message, level='info')
-      puts "-----> #{message}"
+      STDOUT.puts("-----> #{message}")
     end
 
     def error(message)
@@ -23,7 +23,7 @@ module Shuttle
 
     def stream_output(buff)
       str = buff.split("\n").map { |str| "       #{str}"}.join("\n")
-      puts str
+      STDOUT.puts(str)
     end
   end
 end

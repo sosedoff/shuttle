@@ -1,0 +1,11 @@
+app:
+  name: application
+  git: git@hostname.com:repo.git
+  strategy: static
+
+targets:
+  staging:
+    host: localhost
+    user: deployer
+    password: password
+    deploy_to: /home/deployer

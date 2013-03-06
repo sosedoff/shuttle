@@ -10,9 +10,9 @@ module Shuttle
     attr_reader :config
 
     def initialize(config, ssh, target, environment)
-      @config = config
-      @target = target
-      @ssh = ssh
+      @config      = config
+      @target      = target
+      @ssh         = ssh
       @environment = environment
 
       if ssh.file_exists?(version_path)

@@ -1,8 +1,6 @@
 $:.unshift File.expand_path("../..", __FILE__)
 
-RSpec.configure do |conf|
-  conf.include Rack::Test::Methods
-end
+require 'lib/shuttle'
 
 def fixture_path(filename=nil)
   path = File.expand_path("../fixtures", __FILE__)
