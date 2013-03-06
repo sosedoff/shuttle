@@ -10,6 +10,7 @@ module Shuttle
       end
 
       link_release
+      cleanup_releases
     end
   end
 end

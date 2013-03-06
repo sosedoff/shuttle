@@ -27,29 +27,27 @@ module Shuttle
     end
 
     def update_code
-      if !git_installed?
-        error "Git is not installed"
-      end
-
-      if config.app.git.nil?
-        error "Git source url is not defined. Please define :git option first"
-      end
+      error "Git is not installed" if !git_installed?
+      error "Git source url is not defined. Please define :git option first" if config.app.git.nil?
 
       if ssh.directory_exists?(deploy_path('scm'))
-        log "Updating to the latest code"
-        ssh.run "cd #{deploy_path('scm')} && git pull"
-      else
-        log "Getting latest code" 
-        res = ssh.run "cd #{deploy_path} && git clone --depth 10 --recursive --quiet #{config.app.git} scm"
+        res = ssh.run "cd #{deploy_path('scm')} && git pull"
 
         if res.failure?
-          error "Unable to get code. Reason: #{res.output}"
+          error "Unable to fetch latest code. Error: #{res.output}"
+        end
+      else
+        log "Cloning repository #{config.app.git}"
+        res = ssh.run "cd #{deploy_path} && git clone --depth 25 --recursive --quiet #{config.app.git} scm"
+
+        if res.failure?
+          error "Unable clone repository. Error: #{res.output}"
         end
       end
 
       branch = config.app.branch || 'master'
 
-      log "Checking out '#{branch}'"
+      log "Using branch '#{branch}'" if branch != 'master'
       result = ssh.run("cd #{deploy_path('scm')} && git checkout #{branch}")
 
       if result.failure?
@@ -67,10 +65,7 @@ module Shuttle
     end
 
     def checkout_code(path=nil)
-      log "Checking out latest code"
-
       checkout_path = [release_path, path].compact.join('/')
-      #res = ssh.run("cd #{deploy_path('scm')} && git checkout-index -f -a --prefix=#{checkout_path}/")
       res = ssh.run("cp -a #{deploy_path('scm')} #{checkout_path}")
       
       if res.failure?
