@@ -1,11 +1,12 @@
 PATH
   remote: .
   specs:
-    shuttle (0.1.6.1)
+    shuttle (0.1.7)
       chronic_duration (~> 0.9)
       hashr (~> 0.0.22)
       net-ssh (~> 2.6)
       net-ssh-session (~> 0.1.4)
+      safe_yaml (~> 0.8.4)
       terminal_helpers (~> 0.1)
 
 GEM
@@ -16,7 +17,7 @@ GEM
     diff-lcs (1.1.3)
     hashr (0.0.22)
     multi_json (1.3.7)
-    net-ssh (2.6.5)
+    net-ssh (2.6.6)
     net-ssh-session (0.1.4)
       net-ssh (~> 2.6)
     numerizer (0.1.1)
@@ -29,6 +30,7 @@ GEM
     rspec-expectations (2.11.3)
       diff-lcs (~> 1.1.3)
     rspec-mocks (2.11.3)
+    safe_yaml (0.8.4)
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
