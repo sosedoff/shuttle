@@ -31,23 +31,24 @@ module Shuttle
       error "Git source url is not defined. Please define :git option first" if config.app.git.nil?
 
       if ssh.directory_exists?(deploy_path('scm'))
+        log "Fetching latest code"
         res = ssh.run "cd #{deploy_path('scm')} && git pull"
 
         if res.failure?
-          error "Unable to fetch latest code. Error: #{res.output}"
+          error "Unable to fetch latest code: #{res.output}"
         end
       else
         log "Cloning repository #{config.app.git}"
         res = ssh.run "cd #{deploy_path} && git clone --depth 25 --recursive --quiet #{config.app.git} scm"
 
         if res.failure?
-          error "Unable clone repository. Error: #{res.output}"
+          error "Unable clone repository: #{res.output}"
         end
       end
 
       branch = config.app.branch || 'master'
 
-      log "Using branch '#{branch}'" if branch != 'master'
+      log "Using branch '#{branch}'"
       result = ssh.run("cd #{deploy_path('scm')} && git checkout #{branch}")
 
       if result.failure?
@@ -55,7 +56,7 @@ module Shuttle
       end
 
       if ssh.file_exists?("#{deploy_path('scm')}/.gitmodules")
-        log "Updating submodules"
+        log "Updating git submodules"
         result = ssh.run("cd #{deploy_path('scm')} && git submodule update --init --recursive")
 
         if result.failure?
