@@ -24,13 +24,13 @@ module Shuttle
       end
 
       def bundle_install
+        log "Installing dependencies with bundler"
+
         cmd = "bundle install --quiet --path #{bundle_path} --binstubs --deployment"
 
         res = ssh.run("cd #{release_path} && #{cmd}", &method(:stream_output))
 
-        if res.success?
-          log "Bundle install is successful"
-        else
+        unless res.success?
           error "Unable to run bundle: #{res.output}"
         end
       end
