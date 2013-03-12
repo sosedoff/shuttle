@@ -49,7 +49,7 @@ module Shuttle
     end
 
     def thin_restart
-      if ssh.file_exists?(shared_path('pids/thin.pid'))
+      if ssh.file_exists?(shared_path("pids/thin.#{thin_port}.pid"))
         thin_stop
       end
 
