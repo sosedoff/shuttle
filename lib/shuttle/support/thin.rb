@@ -1,7 +1,19 @@
 module Shuttle
   module Support::Thin
+    def thin_config
+      config.thin || Hashr.new
+    end
+
+    def thin_host
+      thin_config.host || "127.0.0.1"
+    end
+
     def thin_port
-      "9000"
+      thin_config.port || "9000"
+    end
+
+    def thin_servers
+      thin_config.servers || 1
     end
 
     def thin_env
@@ -10,9 +22,10 @@ module Shuttle
 
     def thin_options
       [
-        "-a 127.0.0.1",
+        "-a #{thin_host}",
         "-p #{thin_port}",
         "-e #{thin_env}",
+        "-s #{thin_servers}",
         "-l #{shared_path('log/thin.log')}",
         "-P #{shared_path('pids/thin.pid')}",
         "-d"
@@ -24,9 +37,7 @@ module Shuttle
 
       res = ssh.run("cd #{release_path} && ./bin/thin #{thin_options} start")
 
-      if res.success?
-        log "Thin started"
-      else
+      unless res.success?
         error "Unable to start thin: #{res.output}"
       end
     end
@@ -38,8 +49,6 @@ module Shuttle
     end
 
     def thin_restart
-      log "Restarting thin"
-
       if ssh.file_exists?(shared_path('pids/thin.pid'))
         thin_stop
       end
