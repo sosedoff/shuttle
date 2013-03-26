@@ -123,8 +123,19 @@ module Shuttle
     def cleanup_releases
       ssh.run("cd #{deploy_path('releases')}")
       ssh.run("count=`ls -1d [0-9]* | sort -rn | wc -l`")
-      ssh.run("remove=$((count > #{keep_releases} ? count - #{keep_releases} : 0))")
-      ssh.run("ls -1d [0-9]* | sort -rn | tail -n $remove | xargs rm -rf {}")
+
+      count = ssh.capture("echo $count")
+
+      unless count.empty?
+        num = Integer(count) - Integer(keep_releases)
+
+        if num > 0
+          log "Cleaning up old releases: #{num}"
+
+          ssh.run("remove=$((count > #{keep_releases} ? count - #{keep_releases} : 0))")
+          ssh.run("ls -1d [0-9]* | sort -rn | tail -n $remove | xargs rm -rf {}")
+        end
+      end
     end
 
     def write_revision
