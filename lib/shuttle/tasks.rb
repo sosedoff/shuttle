@@ -4,14 +4,14 @@ module Shuttle
       log "Preparing application structure"
 
       ssh.run "mkdir -p #{deploy_path}"
-
       ssh.run "mkdir -p #{deploy_path('releases')}"
       ssh.run "mkdir -p #{deploy_path('backups')}"
       ssh.run "mkdir -p #{deploy_path('shared')}"
-
       ssh.run "mkdir -p #{shared_path('tmp')}"
       ssh.run "mkdir -p #{shared_path('pids')}"
       ssh.run "mkdir -p #{shared_path('log')}"
+
+      execute_hook(:after_setup)
     end
 
     def deploy
@@ -154,6 +154,12 @@ module Shuttle
       end
     end
 
+    def execute_hook(name)
+      if config.hooks && config.hooks[name]
+        execute_commands(config.hooks[name])
+      end
+    end
+
     def deploy_running?
       ssh.file_exists?("#{deploy_path}/.lock")
     end
@@ -165,8 +171,10 @@ module Shuttle
     def execute_commands(commands=[])
       commands.flatten.compact.uniq.each do |cmd|
         log %{Executing "#{cmd.strip}"}
+        command = cmd
+        command = "cd #{release_path} && #{command}" if ssh.directory_exists?(release_path)
 
-        result = ssh.run("cd #{release_path} && #{cmd}")
+        result = ssh.run(command)
 
         if result.failure?
           error "Failed: #{result.output}"
