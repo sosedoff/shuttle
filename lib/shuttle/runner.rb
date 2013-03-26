@@ -25,6 +25,20 @@ module Shuttle
       Hashr.new(YAML.safe_load(data))
     end
 
+    def validate_target(target)
+      if target.host.nil?
+        raise ConfigError, "Target host required"
+      end
+
+      if target.user.nil?
+        raise ConfigError, "Target user required"
+      end
+
+      if target.deploy_to.nil?
+        raise ConfigError, "Target deploy path required"
+      end
+    end
+
     def execute(command)
       @config = load_config
 
@@ -33,14 +47,20 @@ module Shuttle
         raise ConfigError, "Invalid strategy: #{strategy}"
       end
 
-      if @config.targets.nil?
-        raise ConfigError, "Missing targets section"
+      if @config.target
+        server = @config.target
+      else
+        if @config.targets.nil?
+          raise ConfigError, "Please define deployment target"
+        end
+
+        server = @config.targets[target]
+        if server.nil?
+          raise ConfigError, "Target #{target} does not exist"
+        end
       end
 
-      server = @config.targets[target]
-      if server.nil?
-        raise ConfigError, "Target #{target} does not exist"
-      end
+      validate_target(server)
 
       ssh = Net::SSH::Session.new(server.host, server.user, server.password)
 
