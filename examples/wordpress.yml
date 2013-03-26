@@ -1,0 +1,34 @@
+app:
+  name: sample-site
+  strategy: wordpress
+  git: git@github.com/username/sample-site.git
+  branch: production
+
+target:
+  host: sample-site.com
+  user: deployer
+  password: password
+  deploy_to: /home/deployer/www
+
+wordpress:
+  theme: theme_name
+  site:
+    title: "Site Title"
+    url: "http://sample-site.com"
+    admin_name: "admin"
+    admin_email: "admin@admin.com"
+    admin_password: "password"
+  mysql: 
+    host: 127.0.0.1
+    user: mysql-user
+    password: mysql-password
+    database: mysql-dadtabase
+  plugins:
+    - advanced-custom-fields: git://github.com/elliotcondon/acf.git
+    - be-subpages-widget
+    - contact-form-7
+    - contact-form-7-to-database-extension
+    - featured-page-widget
+    - share-this
+    - twitter-widget-pro
+    - types

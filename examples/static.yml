@@ -1,0 +1,10 @@
+app:
+  name: sample-site
+  strategy: static
+  git: git@github.com/username/sample-site.git
+
+target:
+  host: sample-site.com
+  user: deployer
+  password: password
+  deploy_to: /home/deployer/www
