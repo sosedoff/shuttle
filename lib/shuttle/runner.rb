@@ -77,7 +77,8 @@ module Shuttle
       exit_code = 0
       puts "\n"
 
-      integration.log "Shuttle v#{Shuttle::VERSION}"
+      puts "Shuttle v#{Shuttle::VERSION}\n"
+      puts "\n"
       integration.log "Connected to #{server.user}@#{server.host}"
       
       if integration.respond_to?(command)
