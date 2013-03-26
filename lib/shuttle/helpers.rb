@@ -1,7 +1,14 @@
 module Shuttle
   module Helpers
+    LEVEL_COLORS = {
+      'info'    => :green,
+      'warning' => :yellow,
+      'error'   => :red
+    }
+
     def log(message, level='info')
-      STDOUT.puts("-----> #{message}")
+      prefix = "----->".send(LEVEL_COLORS[level])
+      STDOUT.puts("#{prefix} #{message}")
     end
 
     def error(message)
