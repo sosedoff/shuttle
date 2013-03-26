@@ -33,6 +33,7 @@ module Shuttle
       if ssh.directory_exists?(scm_path)
         # Check if git remote has changed
         current_remote = git_remote
+        
         if current_remote != config.app.git
           log("Git remote change detected. Using #{config.app.git}", 'warning')
 
