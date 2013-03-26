@@ -144,6 +144,16 @@ module Shuttle
       end
     end
 
+    def export_environment
+      if config.env?
+        log "Exporting environment variables"
+
+        config.env.each_pair do |k, v|
+          ssh.export(k, v)
+        end
+      end
+    end
+
     def deploy_running?
       ssh.file_exists?("#{deploy_path}/.lock")
     end

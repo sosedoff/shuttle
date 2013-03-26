@@ -93,6 +93,7 @@ module Shuttle
           end
 
           integration.write_lock
+          integration.export_environment
           integration.send(command.to_sym)
           integration.write_revision
 
