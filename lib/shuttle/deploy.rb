@@ -42,5 +42,9 @@ module Shuttle
     def release_path(path=nil)
       [deploy_path, 'releases', version, path].compact.join('/')
     end
+
+    def scm_path
+      deploy_path('scm')
+    end
   end
 end

@@ -32,5 +32,16 @@ module Shuttle
       str = buff.split("\n").map { |str| "       #{str}"}.join("\n")
       STDOUT.puts(str)
     end
+
+    def git_remote
+      result = ssh.run("cd #{scm_path} && git remote -v")
+
+      if result.success?
+        str = result.output.split("\n").first
+        str.split("\t")[1].split(' ')[0]
+      else
+        nil
+      end
+    end
   end
 end

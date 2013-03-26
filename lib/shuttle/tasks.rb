@@ -31,8 +31,19 @@ module Shuttle
       error "Git source url is not defined. Please define :git option first" if config.app.git.nil?
 
       if ssh.directory_exists?(deploy_path('scm'))
+        # Check if git remote has changed
+        current_remote = git_remote
+        if current_remote != config.app.git
+          log("Git remote change detected. Using #{config.app.git}", 'warning')
+
+          res = ssh.run("cd #{scm_path} && git remote rm origin && git remote add origin #{config.app.git}")
+          if res.failure?
+            error("Failed to change git remote: #{res.output}")
+          end
+        end
+
         log "Fetching latest code"
-        res = ssh.run "cd #{deploy_path('scm')} && git pull"
+        res = ssh.run "cd #{deploy_path('scm')} && git pull origin master"
 
         if res.failure?
           error "Unable to fetch latest code: #{res.output}"
