@@ -13,14 +13,14 @@ describe Shuttle::Helpers do
 
   describe '#log' do
     it 'prints a formatted message' do
-      STDOUT.should_receive(:puts).with('-----> message')
+      STDOUT.should_receive(:puts).with("\e[1m\e[32m----->\e[0m message")
       subject.log('message')
     end
   end
 
   describe '#error' do
     it 'prints an error message' do
-      STDOUT.should_receive(:puts).with('-----> ERROR: message')
+      STDOUT.should_receive(:puts).with("\e[1m\e[31m----->\e[0m ERROR: message")
       expect { subject.error('message') }.to raise_error Shuttle::DeployError
     end
 
