@@ -20,6 +20,19 @@ Directory structure:
 - `scm` - Code repository directory
 - `version` - File that contains current release number
 
+## Process
+
+Deployment flow is split into steps:
+
+- Establish connection with target server
+- Prepare application structure. It'll create all required directories or skip if they already exist.
+- Clone repository or check out latest code. Submodules will be automatically updated as well.
+- Switch to specified branch (`master` by default)
+- Create a new release directory and checkout application code
+- Perform strategy-related tasks. 
+- Create a symbolic link to the latest release
+- Clean up old releases (default count: 5)
+
 ## Strategies
 
 Available strategies:
