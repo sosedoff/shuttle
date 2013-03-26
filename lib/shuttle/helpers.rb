@@ -37,8 +37,7 @@ module Shuttle
       result = ssh.run("cd #{scm_path} && git remote -v")
 
       if result.success?
-        str = result.output.split("\n").first
-        str.split("\t")[1].split(' ')[0]
+        result.output.scan(/^origin\t(.+)\s\(fetch\)$/).flatten.first
       else
         nil
       end
