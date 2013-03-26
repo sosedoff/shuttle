@@ -20,6 +20,12 @@ Directory structure:
 - `scm` - Code repository directory
 - `version` - File that contains current release number
 
+Shared directory structure:
+
+- `tmp` - Temporary files
+- `pids` - Shared process IDs files
+- `log` - Shared log files
+
 ## Process
 
 Deployment flow is split into steps:
