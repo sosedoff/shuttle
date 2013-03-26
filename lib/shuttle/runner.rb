@@ -88,7 +88,7 @@ module Shuttle
         if exit_code == 0
           diff = (Float(Time.now - time_start) * 100).round / 100
           duration = ChronicDuration.output(diff, :format => :short)
-          puts "\nRun time: #{duration}\n"
+          puts "\nExecution time: #{duration}\n"
         end
 
         puts "\n"
