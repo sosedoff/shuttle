@@ -5,7 +5,11 @@ module Shuttle
     include Shuttle::Support::Thin
 
     def rails_env
-      environment
+      if config.rails && config.rails.environment
+        config.rails.environment
+      else
+        environment
+      end
     end
 
     def setup_bundler
@@ -29,8 +33,10 @@ module Shuttle
     end
 
     def deploy
-      ssh.export('RACK_ENV', environment)
-      ssh.export('RAILS_ENV', environment)
+      ssh.export('RACK_ENV', rails_env)
+      ssh.export('RAILS_ENV', rails_env)
+
+      log "Rails environment is set to #{rails_env}"
 
       setup
       setup_bundler
