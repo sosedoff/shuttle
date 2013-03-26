@@ -30,7 +30,7 @@ module Shuttle
       error "Git is not installed" if !git_installed?
       error "Git source url is not defined. Please define :git option first" if config.app.git.nil?
 
-      if ssh.directory_exists?(deploy_path('scm'))
+      if ssh.directory_exists?(scm_path)
         # Check if git remote has changed
         current_remote = git_remote
         if current_remote != config.app.git
@@ -43,7 +43,7 @@ module Shuttle
         end
 
         log "Fetching latest code"
-        res = ssh.run "cd #{deploy_path('scm')} && git pull origin master"
+        res = ssh.run "cd #{scm_path} && git pull origin master"
 
         if res.failure?
           error "Unable to fetch latest code: #{res.output}"
@@ -53,22 +53,22 @@ module Shuttle
         res = ssh.run "cd #{deploy_path} && git clone --depth 25 --recursive --quiet #{config.app.git} scm"
 
         if res.failure?
-          error "Unable clone repository: #{res.output}"
+          error "Failed to clone repository: #{res.output}"
         end
       end
 
       branch = config.app.branch || 'master'
 
       log "Using branch '#{branch}'"
-      result = ssh.run("cd #{deploy_path('scm')} && git checkout #{branch}")
+      result = ssh.run("cd #{scm_path} && git checkout #{branch}")
 
       if result.failure?
         error "Failed to checkout #{branch}: #{result.output}"
       end
 
-      if ssh.file_exists?("#{deploy_path('scm')}/.gitmodules")
+      if ssh.file_exists?("#{scm_path}/.gitmodules")
         log "Updating git submodules"
-        result = ssh.run("cd #{deploy_path('scm')} && git submodule update --init --recursive")
+        result = ssh.run("cd #{scm_path} && git submodule update --init --recursive")
 
         if result.failure?
           error "Failed to update submodules: #{result.output}"
@@ -78,7 +78,7 @@ module Shuttle
 
     def checkout_code(path=nil)
       checkout_path = [release_path, path].compact.join('/')
-      res = ssh.run("cp -a #{deploy_path('scm')} #{checkout_path}")
+      res = ssh.run("cp -a #{scm_path} #{checkout_path}")
       
       if res.failure?
         error "Failed to checkout code. Reason: #{res.output}"
@@ -129,7 +129,7 @@ module Shuttle
 
     def write_revision
       if ssh.directory_exists?(deploy_path('scm'))
-        ssh.run("cd #{deploy_path('scm')} && git log --format='%H' -n 1 > #{release_path}/REVISION")
+        ssh.run("cd #{scm_path} && git log --format='%H' -n 1 > #{release_path}/REVISION")
       end
     end
 
