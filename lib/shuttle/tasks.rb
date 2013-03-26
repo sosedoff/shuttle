@@ -23,7 +23,7 @@ module Shuttle
     end
 
     def keep_releases
-      5
+      config.app.keep_releases || 5
     end
 
     def update_code
@@ -123,7 +123,7 @@ module Shuttle
     def cleanup_releases
       ssh.run("cd #{deploy_path('releases')}")
       ssh.run("count=`ls -1d [0-9]* | sort -rn | wc -l`")
-      ssh.run("remove=$((count > 5 ? count - #{keep_releases} : 0))")
+      ssh.run("remove=$((count > #{keep_releases} ? count - #{keep_releases} : 0))")
       ssh.run("ls -1d [0-9]* | sort -rn | tail -n $remove | xargs rm -rf {}")
     end
 
