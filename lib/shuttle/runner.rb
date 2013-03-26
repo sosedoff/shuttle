@@ -33,6 +33,10 @@ module Shuttle
         raise ConfigError, "Invalid strategy: #{strategy}"
       end
 
+      if @config.targets.nil?
+        raise ConfigError, "Missing targets section"
+      end
+
       server = @config.targets[target]
       if server.nil?
         raise ConfigError, "Target #{target} does not exist"
