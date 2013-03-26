@@ -106,7 +106,7 @@ module Shuttle
     end
 
     def write_lock
-      ssh.run("touch #{deploy_path}/.lock")
+      ssh.run(%{echo #{deployer_hostname} > #{deploy_path}/.lock})
     end
 
     def release_lock

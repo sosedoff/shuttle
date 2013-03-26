@@ -60,7 +60,11 @@ module Shuttle
 
         begin
           if integration.deploy_running?
-            integration.error "Another deployment is running right now..."
+            deployer = ssh.read_file("#{integration.deploy_path}/.lock").strip
+            message = "Another deployment is running."
+            message << " Deployer: #{deployer}" if deployer.size > 0
+
+            integration.error(message)
           end
 
           integration.write_lock

@@ -43,5 +43,9 @@ module Shuttle
         nil
       end
     end
+
+    def deployer_hostname
+      `hostname`.strip
+    end
   end
 end
