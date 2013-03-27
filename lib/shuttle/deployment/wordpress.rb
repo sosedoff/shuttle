@@ -1,12 +1,14 @@
 require 'shuttle/deployment/wordpress/core'
 require 'shuttle/deployment/wordpress/cli'
 require 'shuttle/deployment/wordpress/vip'
+require 'shuttle/deployment/wordpress/plugins'
 
 module Shuttle
   class Wordpress < Php
     include WordpressCli
     include WordpressCore
     include WordpressVip
+    include WordpressPlugins
 
     def setup
       if config.wordpress.nil?
