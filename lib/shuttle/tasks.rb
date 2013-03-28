@@ -175,6 +175,11 @@ module Shuttle
       exec("ssh #{target.user}@#{target.host}")
     end
 
+    def changes_at?(path)
+      result = ssh.run(%{"diff -r #{current_path}/#{path} #{release_path}/#{path} 2>/dev/null"})
+      if result.success? ? false : true
+    end
+
     def execute_commands(commands=[])
       commands.flatten.compact.uniq.each do |cmd|
         log %{Executing "#{cmd.strip}"}

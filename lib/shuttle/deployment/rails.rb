@@ -13,7 +13,7 @@ module Shuttle
     end
 
     def precompile_assets?
-      config.rails && config.rails.precompile_assets == true
+      config.rails && config.rails.precompile_assets != false
     end
 
     def start_server?
@@ -44,6 +44,13 @@ module Shuttle
       end
     end
 
+    def precompile_assets
+      if precompile_assets?
+        log "Precompiling assets"
+        rake 'assets:precompile'
+      end
+    end
+
     def deploy
       ssh.export('RACK_ENV', rails_env)
       ssh.export('RAILS_ENV', rails_env)
@@ -56,12 +63,7 @@ module Shuttle
       checkout_code
       bundle_install
       migrate_database
-
-      if precompile_assets?
-        log "Precompiling assets"
-        rake 'assets:precompile'
-      end
-
+      precompile_assets
       link_shared_paths
       
       if start_server?
