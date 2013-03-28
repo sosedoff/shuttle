@@ -176,8 +176,8 @@ module Shuttle
     end
 
     def changes_at?(path)
-      result = ssh.run(%{"diff -r #{current_path}/#{path} #{release_path}/#{path} 2>/dev/null"})
-      if result.success? ? false : true
+      result = ssh.run(%{diff -r #{current_path}/#{path} #{release_path}/#{path} 2>/dev/null})
+      result.success? ? false : true
     end
 
     def execute_commands(commands=[])
