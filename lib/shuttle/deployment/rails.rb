@@ -16,6 +16,14 @@ module Shuttle
       config.rails && config.rails.precompile_assets == true
     end
 
+    def start_server?
+      if config.rails && !config.rails.start_server.nil?
+        config.rails.start_server
+      else
+        true
+      end
+    end
+
     def setup_bundler
       if !bundler_installed?
         log "Bundler is missing. Installing"
@@ -56,7 +64,9 @@ module Shuttle
 
       link_shared_paths
       
-      thin_restart
+      if start_server?
+        thin_restart
+      end
 
       link_release
       cleanup_releases
