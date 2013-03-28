@@ -12,6 +12,10 @@ module Shuttle
       end
     end
 
+    def precompile_assets?
+      config.rails && config.rails.precompile_assets == true
+    end
+
     def setup_bundler
       if !bundler_installed?
         log "Bundler is missing. Installing"
@@ -45,12 +49,15 @@ module Shuttle
       bundle_install
       migrate_database
 
-      log "Precompiling assets"
-      rake 'assets:precompile'
+      if precompile_assets?
+        log "Precompiling assets"
+        rake 'assets:precompile'
+      end
+
+      link_shared_paths
       
       thin_restart
 
-      link_shared_paths
       link_release
       cleanup_releases
     end
