@@ -185,6 +185,8 @@ module Shuttle
 
         if result.failure?
           error "Failed: #{result.output}"
+        else
+          stream_output(result.output)
         end
       end
     end
