@@ -93,6 +93,9 @@ module Shuttle
         error "Release does not exist"
       end
 
+      # Execute before link_release hook
+      execute_hook(:before_link_release)
+
       log "Linking release"
 
       # Check if `current` is a directory first
@@ -104,6 +107,9 @@ module Shuttle
       ssh.run "echo #{version} > #{version_path}"
 
       log "Release v#{version} has been deployed"
+
+      # Execute after link_release hook
+      execute_hook(:after_link_release)
     end
 
     def write_lock
