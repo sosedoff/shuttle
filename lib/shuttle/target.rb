@@ -9,5 +9,15 @@ module Shuttle
       @password  = hash[:password]
       @deploy_to = hash[:deploy_to]
     end
+
+    def connection
+      @connection ||= Net::SSH::Session.new(host, user, password)
+    end
+
+    def validate!
+      raise Shuttle::ConfigError, "Host required" if host.nil?
+      raise Shuttle::ConfigError, "User required" if user.nil?
+      raise Shuttle::ConfigError, "Deploy path required" if deploy_to.nil?
+    end
   end
 end

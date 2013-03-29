@@ -13,6 +13,7 @@ module Shuttle
   autoload :Runner,    'shuttle/runner'
   autoload :Deploy,    'shuttle/deploy'
   autoload :Tasks,     'shuttle/tasks'
+  autoload :Target,    'shuttle/target'
   autoload :Helpers,   'shuttle/helpers'
 
   autoload :Static,    'shuttle/deployment/static'
