@@ -60,6 +60,10 @@ module Shuttle
       name = File.basename(url)
       plugin_path = "#{release_path}/wp-content/plugins/"
 
+      if ssh.file_exists?("/tmp/#{name}")
+        ssh.run("rm -f /tmp/#{name}")
+      end
+
       # Download file first
       log "Downloading #{url}"
       result = ssh.run("cd /tmp && wget #{url}")
