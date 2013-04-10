@@ -87,24 +87,24 @@ module Shuttle
       error "Subversion is not installed" if !svn_installed?
       error "Subversion source is not defined. Please define :svn option first" if config.app.svn.nil?
 
+      url = URI.parse(config.app.svn)
+      repo_url = "#{url.scheme}://#{url.host}#{url.path}"
+
+      opts = ["--non-interactive", "--quiet"]
+
+      if url.user
+        opts << "--username #{url.user}"
+        opts << "--password #{url.password}" if url.password
+      end
+
       if ssh.directory_exists?(scm_path)
         log "Fetching latest code"
 
-        res = ssh.run("cd #{scm_path} && svn up")
+        res = ssh.run("cd #{scm_path} && svn up #{opts.join(' ')}")
         if res.failure?
           error "Unable to fetch latest code: #{res.output}"
         end
       else
-        url = URI.parse(config.app.svn)
-        repo_url = "#{url.scheme}://#{url.host}#{url.path}"
-
-        opts = ["--non-interactive", "--quiet"]
-
-        if url.user
-          opts << "--username #{url.user}"
-          opts << "--password #{url.password}" if url.password
-        end
-
         log "Cloning repository #{config.app.svn}"
         res = ssh.run("cd #{deploy_path} && svn checkout #{opts.join(' ')} #{repo_url} scm")
 
