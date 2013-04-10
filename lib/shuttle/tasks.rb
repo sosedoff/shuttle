@@ -27,6 +27,10 @@ module Shuttle
     end
 
     def update_code
+      if config.app.svn
+        return update_code_svn
+      end
+
       error "Git is not installed" if !git_installed?
       error "Git source url is not defined. Please define :git option first" if config.app.git.nil?
 
@@ -73,6 +77,27 @@ module Shuttle
 
         if result.failure?
           error "Failed to update submodules: #{result.output}"
+        end
+      end
+    end
+
+    def update_code_svn
+      error "Subversion is not installed" if !svn_installed?
+      error "Subversion source is not defined. Please define :svn option first" if config.app.svn.nil?
+
+      if ssh.directory_exists?(scm_path)
+        log "Fetching latest code"
+
+        res = ssh.run("cd #{scm_path} && svn up")
+        if res.failure?
+          error "Unable to fetch latest code: #{res.output}"
+        end
+      else
+        log "Cloning repository #{config.app.svn}"
+        res = ssh.run("cd #{deploy_path} && svn checkout --non-interactive #{config.app.svn} scm")
+
+        if res.failure?
+          error "Failed to clone repository: #{res.output}"
         end
       end
     end
