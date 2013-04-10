@@ -1,3 +1,5 @@
+require 'uri'
+
 module Shuttle
   module Tasks
     def setup
@@ -93,8 +95,18 @@ module Shuttle
           error "Unable to fetch latest code: #{res.output}"
         end
       else
+        url = URI.parse(config.app.svn)
+        repo_url = "#{url.scheme}://#{url.host}#{url.path}"
+
+        opts = ["--non-interactive", "--quiet"]
+
+        if url.user
+          opts << "--username #{url.user}"
+          opts << "--password #{url.password}" if url.password
+        end
+
         log "Cloning repository #{config.app.svn}"
-        res = ssh.run("cd #{deploy_path} && svn checkout --non-interactive #{config.app.svn} scm")
+        res = ssh.run("cd #{deploy_path} && svn checkout #{opts.join(' ')} #{repo_url} scm")
 
         if res.failure?
           error "Failed to clone repository: #{res.output}"
