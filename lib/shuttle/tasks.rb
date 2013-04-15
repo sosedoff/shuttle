@@ -67,7 +67,7 @@ module Shuttle
       branch = config.app.branch || 'master'
 
       log "Using branch '#{branch}'"
-      result = ssh.run("cd #{scm_path} && git checkout #{branch}")
+      result = ssh.run("cd #{scm_path} && git checkout -m #{branch}")
 
       if result.failure?
         error "Failed to checkout #{branch}: #{result.output}"
