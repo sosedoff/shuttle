@@ -143,7 +143,10 @@ module Shuttle
         ssh.run("rm -rf #{current_path}")
       end
 
-      ssh.run "ln -s #{release_path} #{current_path}"
+      if ssh.run("ln -s #{release_path} #{current_path}")
+        error "Unable to create symlink to current path"
+      end
+
       ssh.run "echo #{version} > #{version_path}"
 
       log "Release v#{version} has been deployed"
