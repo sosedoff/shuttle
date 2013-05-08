@@ -143,7 +143,7 @@ module Shuttle
         ssh.run("rm -rf #{current_path}")
       end
 
-      if ssh.run("ln -s #{release_path} #{current_path}")
+      if ssh.run("ln -s #{release_path} #{current_path}").failure?
         error "Unable to create symlink to current path"
       end
 
