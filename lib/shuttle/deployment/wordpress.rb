@@ -77,12 +77,13 @@ module Shuttle
       cmd = [
         "wp core config",
         "--dbname=#{mysql.database}",
-        "--dbhost=#{mysql.host}",
-        "--dbuser=#{mysql.user}",
-        "--dbpass=#{mysql.password}"
-      ].join(' ')
+        "--dbhost=#{mysql.host || 'localhost'}",
+        "--dbuser=#{mysql.user}"
+      ]
 
-      res = ssh.run("cd #{core_path} && #{cmd}")
+      cmd << "--dbpass=#{mysql.password}" if mysql.password
+
+      res = ssh.run("cd #{core_path} && #{cmd.join(' ')}")
       if res.success?
         log "A new wordpress config has been generated"
       else
