@@ -48,7 +48,7 @@ module Shuttle
 
     def check_dependencies
       if !svn_installed?
-        log "Installing subversion"
+        log "Installing Subversion"
         if ssh.run("sudo apt-get install -y subversion").success?
           log "Subversion installed"
         end
@@ -93,7 +93,6 @@ module Shuttle
 
     def check_config
       if !ssh.file_exists?(shared_path('wp-config.php'))
-        log "Wordpress config is missing"
         log "Creating wordpress config at 'shared/wp-config.php'"
         generate_config
       end
@@ -138,8 +137,6 @@ module Shuttle
         if result.failure?
           error "Failed to setup WP network. #{result.output}"
         end
-      else
-        log "Network section is not present in config"
       end
     end
 
