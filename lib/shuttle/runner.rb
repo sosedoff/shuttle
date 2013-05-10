@@ -104,6 +104,9 @@ module Shuttle
         rescue SystemExit
           # NOOP
           exit_code = 0
+        rescue Interrupt
+          STDERR.puts "Interrupted by user. Aborting deploy..."
+          exit_code = 1
         rescue Exception => err
           integration.cleanup_release
           integration.log("ERROR: #{err.message}", 'error')
