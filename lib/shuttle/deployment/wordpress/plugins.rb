@@ -52,6 +52,17 @@ module Shuttle
         error "Unable to install plugin '#{plugin_name}'. Reason: #{res.output}"
       end
 
+      # Init submodules if any
+      if ssh.file_exists?("#{release_path}/wp-content/plugins/#{plugin_name}/.gitmodules")
+        log "Initializing git submodules for #{plugin_name}"
+
+        res = ssh.run("cd #{plugin_name} && git submodule update --init --recursive")
+
+        if res.failure?
+          error "Unable to update submodules for #{plugin_name}: #{res.output}"
+        end
+      end
+
       # Cleanup git folder
       ssh.run("rm -rf #{release_path}/wp-content/plugins/#{plugin_name}/.git")
     end
