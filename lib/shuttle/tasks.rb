@@ -5,6 +5,8 @@ module Shuttle
     def setup
       log "Preparing application structure"
 
+      execute_hook(:before_setup)
+
       ssh.run "mkdir -p #{deploy_path}"
       ssh.run "mkdir -p #{deploy_path('releases')}"
       ssh.run "mkdir -p #{deploy_path('backups')}"
