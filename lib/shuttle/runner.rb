@@ -52,7 +52,7 @@ module Shuttle
     def execute(command)
       @config = load_config
 
-      strategy = config.app.strategy
+      strategy = config.app.strategy || 'static'
       if strategy.nil?
         raise ConfigError, "Invalid strategy: #{strategy}"
       end
