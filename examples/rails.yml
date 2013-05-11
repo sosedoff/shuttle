@@ -1,0 +1,22 @@
+app:
+  name: rails-app
+  strategy: rails
+  git: git@github.com:user/repo.git
+
+target:
+  host: rails-app.com
+  user: deployer
+  password: password
+  deploy_to: /home/deployer/www
+
+rails:
+  environment: production
+  precompile_assets: true
+  start_server: true
+  shared_paths:
+    static_assets: public/static
+
+thin:
+  host: 127.0.0.1
+  port: 9000
+  servers: 5
