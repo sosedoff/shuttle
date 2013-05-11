@@ -195,6 +195,16 @@ module Shuttle
     end
 
     def export_environment
+      ssh.export_hash(
+        'DEPLOY_APPLICATION'  => config.app.name,
+        'DEPLOY_USER'         => target.user,
+        'DEPLOY_PATH'         => deploy_path,
+        'DEPLOY_RELEASE_PATH' => release_path,
+        'DEPLOY_CURRENT_PATH' => current_path,
+        'DEPLOY_SHARED_PATH'  => shared_path,
+        'DEPLOY_SCM_PATH'     => scm_path
+      )
+
       if config.env?
         log "Exporting environment variables"
 
