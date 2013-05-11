@@ -4,6 +4,8 @@ Shuttle is a minimalistic application deployment tool designed for small applica
 and one-server deployments. Configuration is stored as YAML-encoded file, no need to use ruby code. 
 Operations are performed on SSH connection with target server. 
 
+*Under heavy development*
+
 ## Install
 
 Clone repository and run:
@@ -86,7 +88,8 @@ shuttle deploy
 Output will look like this:
 
 ```
------> Shuttle v0.1.8
+Shuttle v0.2.0
+
 -----> Connected to deployer@mysite.com
 -----> Preparing application structure
 -----> Fetching latest code
