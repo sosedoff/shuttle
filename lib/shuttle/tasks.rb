@@ -27,7 +27,7 @@ module Shuttle
     end
 
     def keep_releases
-      config.app.keep_releases || 5
+      config.app.keep_releases || 10
     end
 
     def update_code
