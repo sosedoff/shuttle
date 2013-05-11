@@ -6,11 +6,10 @@ module Shuttle
       update_code
       checkout_code
 
-      if config.before_link_release
-        execute_commands(config.before_link_release)
-      end
-
+      execute_hook(:before_link_release)
       link_release
+      execute_hook(:after_link_release)
+
       cleanup_releases
     end
   end
