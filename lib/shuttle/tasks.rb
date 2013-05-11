@@ -192,7 +192,17 @@ module Shuttle
 
     def write_revision
       if ssh.directory_exists?(deploy_path('scm'))
-        ssh.run("cd #{scm_path} && git log --format='%H' -n 1 > #{release_path}/REVISION")
+        command = nil
+
+        if config.apps.git
+          command = "git log --format='%H' -n 1"
+        elsif config.app.svn
+          command = "svn info |grep Revision: |cut -c11-"
+        end
+
+        if command
+          ssh.run("cd #{scm_path} && #{command} > #{release_path}/REVISION")
+        end
       end
     end
 
