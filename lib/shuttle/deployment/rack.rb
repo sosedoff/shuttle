@@ -1,7 +1,6 @@
 module Shuttle
   class Rack < Shuttle::Deploy
     include Shuttle::Support::Bundler
-    include Shuttle::Support::RVM
     include Shuttle::Support::Thin
 
     def setup_bundler

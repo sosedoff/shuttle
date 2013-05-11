@@ -1,7 +1,6 @@
 module Shuttle
   class Rails < Shuttle::Deploy
     include Shuttle::Support::Bundler
-    include Shuttle::Support::RVM
     include Shuttle::Support::Thin
 
     def rails_env
