@@ -1,10 +1,7 @@
 # Shuttle
 
-Minimalistic application deployment tool.
-
-## Overview
-
-Shuttle is a deployment tool designed for small applications and one-server deployments. Configuration is stored as YAML-encoded file, no need to use ruby code. 
+Shuttle is a minimalistic application deployment tool designed for small applications 
+and one-server deployments. Configuration is stored as YAML-encoded file, no need to use ruby code. 
 Operations are performed on SSH connection with target server. 
 
 ## Structure
