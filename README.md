@@ -4,6 +4,14 @@ Shuttle is a minimalistic application deployment tool designed for small applica
 and one-server deployments. Configuration is stored as YAML-encoded file, no need to use ruby code. 
 Operations are performed on SSH connection with target server. 
 
+## Install
+
+Clone repository and run:
+
+```
+rake install
+```
+
 ## Structure
 
 Deployment structure is very similar to capistrano.
@@ -67,7 +75,6 @@ target:
 
 This strategy is designed to deploy wordpress sites developed as a separate theme. It requires `subversion` installed on the server (will be automatically installed). 
 
-
 ## Usage
 
 To execute a new deploy, simply type (in your project folder):
@@ -108,3 +115,32 @@ To run in debug mode, add `-d` flag:
 ```
 shuttle deploy -d
 ```
+
+## Test
+
+To run project test suite execute:
+
+```
+bundle exec rake test
+```
+
+## License
+
+Copyright (c) 2012-2013 Dan Sosedoff.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
