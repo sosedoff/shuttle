@@ -1,9 +1,13 @@
 require 'terminal_helpers'
 require 'net/ssh/session'
 require 'chronic_duration'
+require 'toml'
 require 'hashr'
 require 'yaml'
+require 'safe_yaml'
+require 'toml'
 require 'digest/sha1'
+require 'logger'
 
 require 'shuttle/version'
 require 'shuttle/errors'

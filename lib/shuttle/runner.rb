@@ -1,6 +1,3 @@
-require 'logger'
-require 'safe_yaml'
-
 module Shuttle
   class Runner
     attr_reader :options
@@ -22,7 +19,20 @@ module Shuttle
 
     def load_config
       data = File.read(config_path)
+
+      if config_path =~ /\.toml$/
+        parse_toml_data(data)
+      else
+        parse_yaml_data(data)
+      end
+    end
+
+    def parse_yaml_data(data)
       Hashr.new(YAML.safe_load(data))
+    end
+
+    def parse_toml_data(data)
+      Hashr.new(TOML::Parser.new(data).parsed)
     end
 
     def validate_target(target)
