@@ -1,6 +1,7 @@
 require 'terminal_helpers'
 require 'net/ssh/session'
 require 'chronic_duration'
+require 'toml'
 require 'hashr'
 require 'yaml'
 require 'digest/sha1'
