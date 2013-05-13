@@ -194,7 +194,7 @@ module Shuttle
       if ssh.directory_exists?(deploy_path('scm'))
         command = nil
 
-        if config.apps.git
+        if config.app.git
           command = "git log --format='%H' -n 1"
         elsif config.app.svn
           command = "svn info |grep Revision: |cut -c11-"
