@@ -3,8 +3,8 @@ require File.expand_path('../lib/shuttle/version', __FILE__)
 Gem::Specification.new do |s|
   s.name        = "shuttle"
   s.version     = Shuttle::VERSION
-  s.summary     = "Deployment automation tool"
-  s.description = "To be added"
+  s.summary     = "Minimalistic deployment tool"
+  s.description = "Minimalistic deployment tool for small and one-server applications"
   s.homepage    = "https://github.com/sosedoff/shuttle"
   s.authors     = ["Dan Sosedoff"]
   s.email       = ["dan.sosedoff@gmail.com"]
