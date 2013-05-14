@@ -1,5 +1,5 @@
 module Shuttle
-  class NodeJs < Shuttle::Deploy
+  class Nodejs < Shuttle::Deploy
     def setup
       error "Please install Node.js first" unless node_installed?
 

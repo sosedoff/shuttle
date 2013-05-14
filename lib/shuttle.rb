@@ -25,7 +25,7 @@ module Shuttle
   autoload :Wordpress, 'shuttle/deployment/wordpress'
   autoload :Ruby,      'shuttle/deployment/ruby'
   autoload :Rails,     'shuttle/deployment/rails'
-  autoload :NodeJs,    'shuttle/deployment/node_js'
+  autoload :Nodejs,    'shuttle/deployment/nodejs'
 
   module Support
     autoload :Bundler, 'shuttle/support/bundler'
