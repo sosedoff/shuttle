@@ -1,9 +1,11 @@
 module Shuttle
   class Nodejs < Shuttle::Deploy
     def setup
-      error "Please install Node.js first" unless node_installed?
-
-      log "Using Node.js v#{node_version}, NPM v#{npm_version}"
+      if node_installed?
+        log "Using Node.js v#{node_version}, NPM v#{npm_version}"
+      else
+        error "Node.js is not installed."
+      end
 
       super
     end
