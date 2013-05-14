@@ -17,16 +17,22 @@ module Shuttle
         res = ssh.run("gem install bundler")
 
         if res.success?
-          log "Bundler v#{bundler_version} installed"
+          log "Bundler installed: #{bundler_version}"
         else
-          error "Unable to install bundler: #{res.output}"
+          error "Bundler install failed: #{res.output}"
         end
       end
 
       def bundle_install
-        log "Installing dependencies with bundler"
+        log "Installing dependencies with Bundler"
 
-        cmd = "bundle install --quiet --path #{bundle_path} --binstubs --deployment"
+        cmd = [
+          "bundle install",
+          "--quiet",
+          "--path #{bundle_path}",
+          "--binstubs",
+          "--deployment"
+        ].join(' ')
 
         res = ssh.run("cd #{release_path} && #{cmd}", &method(:stream_output))
 
