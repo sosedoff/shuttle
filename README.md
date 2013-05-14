@@ -87,7 +87,7 @@ target:
   deploy_to: /home/deployer/www
 ```
 
-### Wordpress Strategy
+### WordPress Strategy
 
 This strategy is designed to deploy wordpress sites developed as a separate theme. 
 It requires `subversion` installed on the server (will be automatically installed). 
