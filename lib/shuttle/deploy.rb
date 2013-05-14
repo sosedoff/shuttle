@@ -46,5 +46,13 @@ module Shuttle
     def scm_path
       deploy_path('scm')
     end
+
+    def deploy
+      setup
+      update_code
+      checkout_code
+      link_release
+      cleanup_releases
+    end
   end
 end
