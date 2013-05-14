@@ -80,7 +80,13 @@ module Shuttle
 
       ssh.open
 
-      klass = Shuttle.const_get(strategy.capitalize)
+      klass = Shuttle.const_get(strategy.capitalize) rescue nil
+
+      if klass.nil?
+        STDERR.puts "Invalid strategy: #{strategy}"
+        exit 1
+      end
+
       integration = klass.new(config, ssh, server, target) 
 
       command.gsub!(/:/,'_')
