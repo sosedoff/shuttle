@@ -8,7 +8,13 @@ Operations are performed on SSH connection with target server.
 
 ## Install
 
-Clone repository and run:
+Install from Rubygems:
+
+```
+gem install shuttle-deploy
+```
+
+Or install manually (clone repo first):
 
 ```
 rake install
