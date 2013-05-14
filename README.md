@@ -14,6 +14,13 @@ Clone repository and run:
 rake install
 ```
 
+Supported ruby versions:
+
+- 1.8.7
+- 1.9.2
+- 1.9.3
+- 2.0.0
+
 ## Structure
 
 Deployment structure is very similar to capistrano.
