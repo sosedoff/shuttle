@@ -54,7 +54,7 @@ Available deployment strategies:
 - `wordpress`
 - `ruby`
 - `rails`
-- 'nodejs'
+- `nodejs`
 
 ### Static Strategy
 
