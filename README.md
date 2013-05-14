@@ -48,12 +48,13 @@ Deployment flow is split into steps:
 
 ## Strategies
 
-Available strategies:
+Available deployment strategies:
 
 - `static`
 - `wordpress`
-- `rack`
+- `ruby`
 - `rails`
+- 'nodejs'
 
 ### Static Strategy
 
