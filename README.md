@@ -76,7 +76,80 @@ target:
 
 ### Wordpress Strategy
 
-This strategy is designed to deploy wordpress sites developed as a separate theme. It requires `subversion` installed on the server (will be automatically installed). 
+This strategy is designed to deploy wordpress sites developed as a separate theme. 
+It requires `subversion` installed on the server (will be automatically installed). 
+
+## Deployment Config
+
+Deployment config has a few main sections: `app` and `target`. 
+
+### Application
+
+Application section defines deployment strategy, source code location and other options:
+
+```yml
+app:
+  name: my-app
+  strategy: static
+  git: https://site-url.com/repo.git
+  branch: master
+  keep_releases: 5
+```
+
+Options:
+
+- `name` - Your application name
+- `strategy` - Deployment strategy. Defaults to `static`
+- `git` - Git repository url
+- `branch` - Git repository branch. Defaults to `master`
+- `keep_releases` - Number of releases to keep. Defaults to `10`
+
+You can also use Subversion as a main source:
+
+```yml
+app:
+  svn: http://site-url.com/repo.git
+```
+
+If your repository requires authentication, use url in the following format:
+
+```
+http://username:password@yourdomain.com/project
+```
+
+### Target
+
+Target is a set of remote machine credentials:
+
+```yml
+target:
+  host: yourdomain.com
+  user: deployer
+  password: password
+  deploy_to: /home/deployer/myapp
+```
+
+Options:
+
+- `host` - Remote server host or ip
+- `user` - Remote server user account
+- `password` - Optional password. Use passwordless authentication if possible.
+- `deploy_to` - Primary directory where all releases will be stored
+
+You can also define multiple targets per config if environments does not have any specific 
+configuration settings:
+
+```yml
+targets:
+  production:
+    host: mydomain.com
+    user: deployer
+    deploy_to: /home/production/myapp
+  staging:
+    host: mydomain.com
+    user: deployer
+    deploy_to: /home/staging/myapp
+```
 
 ## Usage
 
