@@ -23,7 +23,7 @@ module Shuttle
   autoload :Static,    'shuttle/deployment/static'
   autoload :Php,       'shuttle/deployment/php'
   autoload :Wordpress, 'shuttle/deployment/wordpress'
-  autoload :Rack,      'shuttle/deployment/rack'
+  autoload :Ruby,      'shuttle/deployment/ruby'
   autoload :Rails,     'shuttle/deployment/rails'
 
   module Support
