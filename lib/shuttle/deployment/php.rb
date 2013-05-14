@@ -1,12 +1,14 @@
 module Shuttle
   class Php < Shuttle::Deploy
     def setup
-      if !php_installed?
-        error "PHP is not installed on this system"
+      unless php_installed?
+        error "Please install PHP first"
       end
-      
+
       super
     end
+
+    private
 
     def php_installed?
       ssh.run("which php").success?
