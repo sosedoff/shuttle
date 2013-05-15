@@ -1,6 +1,5 @@
 module Shuttle
   class Deploy
-    include Shuttle::Tasks
     include Shuttle::Helpers
 
     attr_reader :ssh
