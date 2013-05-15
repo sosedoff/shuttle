@@ -15,8 +15,8 @@ module Shuttle
     end
 
     def validate!
-      raise Shuttle::ConfigError, "Host required" if host.nil?
-      raise Shuttle::ConfigError, "User required" if user.nil?
+      raise Shuttle::ConfigError, "Host required"        if host.nil?
+      raise Shuttle::ConfigError, "User required"        if user.nil?
       raise Shuttle::ConfigError, "Deploy path required" if deploy_to.nil?
     end
   end
