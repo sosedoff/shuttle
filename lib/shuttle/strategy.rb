@@ -148,8 +148,8 @@ module Shuttle
 
       log "Release v#{version} has been deployed"
 
-      # Execute after link_release hook
-      execute_hook(:after_link_release)
+      # Execute after link_release hook, allow failures here
+      execute_hook(:after_link_release, true)
     end
 
     def write_lock
@@ -221,9 +221,9 @@ module Shuttle
       end
     end
 
-    def execute_hook(name)
+    def execute_hook(name, allow_failures=false)
       if config.hooks && config.hooks[name]
-        execute_commands(config.hooks[name])
+        execute_commands(config.hooks[name], allow_failures)
       end
     end
 
@@ -244,7 +244,7 @@ module Shuttle
       result.success? ? false : true
     end
 
-    def execute_commands(commands=[])
+    def execute_commands(commands=[], allow_failures=false)
       commands.flatten.compact.uniq.each do |cmd|
         log %{Executing "#{cmd.strip}"}
         command = cmd
@@ -252,7 +252,7 @@ module Shuttle
 
         result = ssh.run(command)
 
-        if result.failure?
+        if result.failure? && allow_failures == false
           error "Failed: #{result.output}"
         else
           stream_output(result.output)
