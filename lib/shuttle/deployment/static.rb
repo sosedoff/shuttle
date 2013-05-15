@@ -1,5 +1,5 @@
 module Shuttle
-  class Static < Shuttle::Deploy
+  class Static < Shuttle::Strategy
     # Does not implement any custom functionality
   end
 end

@@ -47,12 +47,8 @@ module Shuttle
       deploy_path('scm')
     end
 
-    def deploy
-      setup
-      update_code
-      checkout_code
-      link_release
-      cleanup_releases
+    def keep_releases
+      config.app.keep_releases || 10
     end
   end
 end

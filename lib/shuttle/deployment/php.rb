@@ -1,5 +1,5 @@
 module Shuttle
-  class Php < Shuttle::Deploy
+  class Php < Shuttle::Strategy
     def setup
       unless php_installed?
         error "Please install PHP first"

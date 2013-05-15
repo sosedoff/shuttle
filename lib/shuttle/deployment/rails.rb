@@ -1,5 +1,5 @@
 module Shuttle
-  class Rails < Shuttle::Deploy
+  class Rails < Shuttle::Strategy
     include Shuttle::Support::Bundler
     include Shuttle::Support::Thin
 

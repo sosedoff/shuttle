@@ -16,9 +16,9 @@ module Shuttle
   autoload :Session,   'shuttle/session'
   autoload :Runner,    'shuttle/runner'
   autoload :Deploy,    'shuttle/deploy'
-  autoload :Tasks,     'shuttle/tasks'
   autoload :Target,    'shuttle/target'
   autoload :Helpers,   'shuttle/helpers'
+  autoload :Strategy,  'shuttle/strategy'
 
   autoload :Static,    'shuttle/deployment/static'
   autoload :Php,       'shuttle/deployment/php'

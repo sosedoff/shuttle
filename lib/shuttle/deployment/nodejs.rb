@@ -1,5 +1,5 @@
 module Shuttle
-  class Nodejs < Shuttle::Deploy
+  class Nodejs < Shuttle::Strategy
     def setup
       if node_installed?
         log "Using Node.js v#{node_version}, Npm v#{npm_version}"

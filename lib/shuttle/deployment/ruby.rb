@@ -1,5 +1,5 @@
 module Shuttle
-  class Ruby < Shuttle::Deploy
+  class Ruby < Shuttle::Strategy
     include Shuttle::Support::Bundler
     include Shuttle::Support::Thin
 

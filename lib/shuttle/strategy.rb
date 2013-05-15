@@ -1,7 +1,7 @@
 require 'uri'
 
 module Shuttle
-  module Tasks
+  class Strategy < Shuttle::Deploy
     def setup
       log "Preparing application structure"
 
@@ -23,10 +23,6 @@ module Shuttle
       checkout_code
       link_release
       cleanup_releases
-    end
-
-    def keep_releases
-      config.app.keep_releases || 10
     end
 
     def update_code
