@@ -22,9 +22,5 @@ module Shuttle
         @version = 1
       end
     end
-
-    def keep_releases
-      config.app.keep_releases || 10
-    end
   end
 end

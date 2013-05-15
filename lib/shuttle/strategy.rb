@@ -235,6 +235,10 @@ module Shuttle
       exec("ssh #{target.user}@#{target.host}")
     end
 
+    def keep_releases
+      config.app.keep_releases || 10
+    end
+
     def changes_at?(path)
       result = ssh.run(%{diff -r #{current_path}/#{path} #{release_path}/#{path} 2>/dev/null})
       result.success? ? false : true
