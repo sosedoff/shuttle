@@ -1,6 +1,7 @@
 module Shuttle
   class Deploy
     include Shuttle::Helpers
+    include Shuttle::PathHelpers
 
     attr_reader :ssh
     attr_reader :target
@@ -20,30 +21,6 @@ module Shuttle
       else
         @version = 1
       end
-    end
-
-    def deploy_path(path=nil)
-      [target.deploy_to, path].compact.join('/')
-    end
-
-    def shared_path(path=nil)
-      [deploy_path, 'shared', path].compact.join('/')
-    end
-
-    def current_path(path=nil)
-      [deploy_path, 'current', path].compact.join('/')
-    end
-
-    def version_path
-      deploy_path('version')
-    end
-
-    def release_path(path=nil)
-      [deploy_path, 'releases', version, path].compact.join('/')
-    end
-
-    def scm_path
-      deploy_path('scm')
     end
 
     def keep_releases
