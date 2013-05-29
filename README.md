@@ -48,16 +48,15 @@ Shared directory structure:
 
 ## Process
 
-Deployment flow is split into steps:
+Deployment flow consists of steps:
 
-- Establish connection with target server
-- Prepare application structure. It'll create all required directories or skip if they already exist.
-- Clone repository or check out latest code. Submodules will be automatically updated as well.
-- Switch to specified branch (`master` by default)
-- Create a new release directory and checkout application code
-- Perform strategy-related tasks. 
-- Create a symbolic link to the latest release
-- Clean up old releases (default count: 5)
+- Connect to remote server
+- Prepare application structure (releases, shared dirs, etc)
+- Clone or update git/svn repository code from specified branch
+- Create a new release and checkout application code
+- Perform strategy-defined tasks
+- Make new release current
+- Cleanup old releases
 
 ## Strategies
 
@@ -77,7 +76,6 @@ Example configuration:
 ```yaml
 app:
   name: my-application
-  strategy: static
   git: git@github.com:my-site.git
 
 target:
@@ -247,7 +245,6 @@ Shuttle v0.2.0
 -----> Using branch 'master'
 -----> Linking release
 -----> Release v35 has been deployed
------> Cleaning up old releases: 1
 
 Execution time: 2s
 ```
