@@ -206,6 +206,7 @@ module Shuttle
         'DEPLOY_APPLICATION'  => config.app.name,
         'DEPLOY_USER'         => target.user,
         'DEPLOY_PATH'         => deploy_path,
+        'DEPLOY_RELEASE'      => version,
         'DEPLOY_RELEASE_PATH' => release_path,
         'DEPLOY_CURRENT_PATH' => current_path,
         'DEPLOY_SHARED_PATH'  => shared_path,

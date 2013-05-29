@@ -213,6 +213,7 @@ During deployment shuttle sets a few environment variables:
 - `DEPLOY_APPLICATION`  - Application name
 - `DEPLOY_USER`         - Current deployment user
 - `DEPLOY_PATH`         - Path to application releases
+- `DEPLOY_RELEASE`      - New release number
 - `DEPLOY_RELEASE_PATH` - Path to currently executing release
 - `DEPLOY_CURRENT_PATH` - Path to current release (symlinked)
 - `DEPLOY_SHARED_PATH`  - Path to shared resources
