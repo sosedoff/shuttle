@@ -92,6 +92,50 @@ target:
 This strategy is designed to deploy wordpress sites developed as a separate theme. 
 It requires `subversion` installed on the server (will be automatically installed). 
 
+### Rails Strategy
+
+Rails deployment strategy will deploy your basic application: install dependencies, 
+migrate database, precompile assets and start web server. Most of the steps are automatic.
+
+Define strategy first:
+
+```yml
+app:
+  name: myapp
+  strategy: rails
+```
+
+Then add a separate section:
+
+```yml
+rails:
+  environment: production
+  precompile_assets: true
+  start_server: true
+```
+
+If using `start_server`, shuttle will try to start thin server. 
+You can modify settings for thin:
+
+```yml
+thin:
+  host: 127.0.0.1
+  port: 9000
+  servers: 5
+```
+
+You can also use `foreman` to run application:
+
+```yml
+rails:
+  start_server: false
+
+hooks:
+  before_link_release:
+    - "sudo bundle exec foreman export upstart /etc/init -a $DEPLOY_APPLICATION -u $DEPLOY_USER -p 9000 -l $DEPLOY_SHARED_PATH/log"
+    - "sudo start $DEPLOY_APPLICATION || sudo restart $DEPLOY_APPLICATION"
+```
+
 ## Deployment Config
 
 Deployment config has a few main sections: `app` and `target`. 
