@@ -177,7 +177,7 @@ module Shuttle
         num = Integer(count) - Integer(keep_releases)
 
         if num > 0
-          log "Cleaning up old releases: #{num}"
+          log "Cleaning up old releases: #{num}" if num > 1
 
           ssh.run("remove=$((count > #{keep_releases} ? count - #{keep_releases} : 0))")
           ssh.run("ls -1d [0-9]* | sort -rn | tail -n $remove | xargs rm -rf {}")
