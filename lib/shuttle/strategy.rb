@@ -203,6 +203,7 @@ module Shuttle
 
     def export_environment
       ssh.export_hash(
+        'DEPLOY_APP'          => config.app.name,
         'DEPLOY_APPLICATION'  => config.app.name,
         'DEPLOY_USER'         => target.user,
         'DEPLOY_PATH'         => deploy_path,

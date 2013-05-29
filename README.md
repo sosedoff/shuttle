@@ -130,8 +130,8 @@ rails:
 
 hooks:
   before_link_release:
-    - "sudo bundle exec foreman export upstart /etc/init -a $DEPLOY_APPLICATION -u $DEPLOY_USER -p 9000 -l $DEPLOY_SHARED_PATH/log"
-    - "sudo start $DEPLOY_APPLICATION || sudo restart $DEPLOY_APPLICATION"
+    - "sudo bundle exec foreman export upstart /etc/init -a $DEPLOY_APP -u $DEPLOY_USER -p 9000 -l $DEPLOY_SHARED_PATH/log"
+    - "sudo start $DEPLOY_APP || sudo restart $DEPLOY_APP"
 ```
 
 ## Deployment Config
@@ -210,7 +210,7 @@ targets:
 
 During deployment shuttle sets a few environment variables:
 
-- `DEPLOY_APPLICATION`  - Application name
+- `DEPLOY_APP`          - Application name
 - `DEPLOY_USER`         - Current deployment user
 - `DEPLOY_PATH`         - Path to application releases
 - `DEPLOY_RELEASE`      - New release number
