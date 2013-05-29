@@ -164,6 +164,26 @@ targets:
     deploy_to: /home/staging/myapp
 ```
 
+### Deployment environment
+
+During deployment shuttle sets a few environment variables:
+
+- `DEPLOY_APPLICATION`  - Application name
+- `DEPLOY_USER`         - Current deployment user
+- `DEPLOY_PATH`         - Path to application releases
+- `DEPLOY_RELEASE_PATH` - Path to currently executing release
+- `DEPLOY_CURRENT_PATH` - Path to current release (symlinked)
+- `DEPLOY_SHARED_PATH`  - Path to shared resources
+- `DEPLOY_SCM_PATH`     - Path to code repository
+
+These could be used in hooks. Example:
+
+```
+hooks:
+  before_link_release:
+    - "cp $DEPLOY_SHARED_PATH/myconfig $DEPLOY_RELEASE_PATH/myconfig"
+```
+
 ## Usage
 
 To execute a new deploy, simply type (in your project folder):
