@@ -1,17 +1,15 @@
 require 'spec_helper'
 
 describe Shuttle::Target do
+  let(:target) { Target.new(attributes) }
+
   describe '#connection' do
-    subject do
-      Shuttle::Target.new(
-        :host     => 'host.com', 
-        :user     => 'user',
-        :password => 'password'
-      )
+    let(:attributes) do
+      {:host => 'host.com', user: 'user', password: 'password'}
     end
 
     it 'returns a new ssh session connection' do
-      subject.connection.should be_a Net::SSH::Session
+      expect(target.connection). be_a Net::SSH::Session
     end
   end
 
@@ -24,7 +22,7 @@ describe Shuttle::Target do
       end
 
       it 'does not raise errors' do
-        expect { subject.validate! }.not_to raise_error
+        expect { target.validate! }.not_to raise_error
       end
     end
 
@@ -34,7 +32,7 @@ describe Shuttle::Target do
       end
 
       it 'raises error' do
-        expect { subject.validate! }.to raise_error Shuttle::ConfigError, "Deploy path required" 
+        expect { target.validate! }.to raise_error Shuttle::ConfigError, "Deploy path required" 
       end
     end
   end
