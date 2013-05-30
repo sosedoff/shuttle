@@ -25,6 +25,10 @@ module Shuttle
       cleanup_releases
     end
 
+    def rollback
+      # TODO
+    end
+
     def update_code
       if config.app.svn
         return update_code_svn

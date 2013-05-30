@@ -81,18 +81,22 @@ module Shuttle
       ssh.open
 
       klass = Shuttle.const_get(strategy.capitalize) rescue nil
+      command.gsub!(/:/,'_')
+      exit_code = 0
 
       if klass.nil?
         STDERR.puts "Invalid strategy: #{strategy}"
         exit 1
       end
 
-      integration = klass.new(config, ssh, server, target) 
+      unless %w(setup deploy rollback).include?(command)
+        STDERR.puts "Invalid command: #{command}"
+        exit 1
+      end
 
-      command.gsub!(/:/,'_')
-      exit_code = 0
+      integration = klass.new(config, ssh, server, target)
+
       puts "\n"
-
       puts "Shuttle v#{Shuttle::VERSION}\n"
       puts "\n"
       integration.log "Connected to #{server.user}@#{server.host}"
