@@ -27,7 +27,13 @@ module Shuttle
         ssh.run("mkdir -p #{core_path}")
       end
 
-      result = ssh.run("cd #{core_path} && wp core download")
+      cmd = "cd #{core_path} && wp core download"
+
+      if config.wordpress.core
+        cmd << " --version=#{config.wordpress.core}"
+      end
+
+      result = ssh.run(cmd)
 
       if result.success?
         log "Wordpress core installed"
