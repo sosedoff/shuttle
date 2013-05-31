@@ -38,7 +38,7 @@ module Shuttle
       if result.success?
         log "WordPress core installed"
       else
-        error "Unable to install wordpress core: #{result.output}"
+        error "Unable to install WordPress core: #{result.output}"
       end
     end
 

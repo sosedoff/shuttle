@@ -24,7 +24,7 @@ module Shuttle
       ssh.run("cd #{CLI_PATH} && sudo utils/dev-build")
       
       if cli_installed?
-        log "Wordpress CLI (#{tag}) installed"
+        log "WordPress CLI (#{tag}) installed"
       else
         error "Unable to install WordPress CLI"
       end
