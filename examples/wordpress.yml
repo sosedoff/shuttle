@@ -11,6 +11,8 @@ target:
   deploy_to: /home/deployer/www
 
 wordpress:
+  core: 3.5.1
+  cli: 0.9.1
   theme: theme_name
   site:
     title: "Site Title"
