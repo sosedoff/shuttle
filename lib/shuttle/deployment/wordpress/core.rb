@@ -21,7 +21,7 @@ module Shuttle
         core_remove
       end
 
-      log "Installing wordpress core"
+      log "Installing WordPress core"
 
       unless ssh.directory_exists?(core_path)
         ssh.run("mkdir -p #{core_path}")
@@ -36,7 +36,7 @@ module Shuttle
       result = ssh.run(cmd)
 
       if result.success?
-        log "Wordpress core installed"
+        log "WordPress core installed"
       else
         error "Unable to install wordpress core: #{result.output}"
       end
@@ -46,7 +46,7 @@ module Shuttle
     # @return [Boolean]
     def core_remove
       if ssh.directory_exists?(core_path)
-        log "Removing wordpress shared core"
+        log "Removing WordPress shared core"
         ssh.run("rm -rf #{core_path}")
       end
 

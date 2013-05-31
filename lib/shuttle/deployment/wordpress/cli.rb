@@ -8,7 +8,7 @@ module Shuttle
     end
 
     def cli_install
-      log "Installing wordpress CLI"
+      log "Installing WordPress CLI"
 
       ssh.run("sudo git clone --recursive --quiet #{CLI_GIT} #{CLI_PATH}")
 
@@ -26,7 +26,7 @@ module Shuttle
       if cli_installed?
         log "Wordpress CLI (#{tag}) installed"
       else
-        error "Unable to install wordpress CLI"
+        error "Unable to install WordPress CLI"
       end
     end
 

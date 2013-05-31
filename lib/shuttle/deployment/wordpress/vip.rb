@@ -30,7 +30,7 @@ module Shuttle
     end
 
     def vip_install
-      log "Installing wordpress VIP"
+      log "Installing WordPress VIP"
 
       vip = vip_get_config
 
@@ -47,9 +47,9 @@ module Shuttle
       res = ssh.run(cmd, &method(:stream_output))
 
       if res.success?
-        log "Wordpress VIP installed"
+        log "WordPress VIP installed"
       else
-        raise DeployError, "Unable to install wordpress VIP. Reason: #{res.output}"
+        raise DeployError, "Unable to install WordPress VIP. Reason: #{res.output}"
       end
     end
 
@@ -73,9 +73,9 @@ module Shuttle
     def vip_link
       ssh.run("mkdir -p #{release_path}/wp-content/themes/vip")
       result = ssh.run("cp -a #{vip_path} #{release_path('wp-content/themes/vip/plugins')}")
-      
+
       if result.success?
-        log "Wordpress VIP is linked"
+        log "WordPress VIP is linked"
       else
         error "Unable to link VIP: #{result.output}"
       end
