@@ -11,9 +11,14 @@ module Shuttle
       log "Installing wordpress CLI"
 
       ssh.run("sudo git clone --recursive --quiet #{CLI_GIT} #{CLI_PATH}")
-      tags = ssh.capture("cd #{CLI_PATH} && git tag").split("\n").map(&:strip).reverse
-      tag  = tags.first
-      rev  = ssh.capture("cd #{CLI_PATH} && git rev-parse #{tag}").strip
+
+      if config.wordpress.cli.nil?
+        tags = ssh.capture("cd #{CLI_PATH} && git tag").split("\n").map(&:strip).reverse
+        tag  = tags.first
+        rev  = ssh.capture("cd #{CLI_PATH} && git rev-parse #{tag}").strip
+      else
+        tag = rev = config.wordpress.cli
+      end
 
       ssh.run("cd #{CLI_PATH} && git checkout #{rev}")
       ssh.run("cd #{CLI_PATH} && sudo utils/dev-build")
