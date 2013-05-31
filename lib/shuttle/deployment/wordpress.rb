@@ -25,14 +25,14 @@ module Shuttle
       else
         version = ssh.capture("cd #{core_path} && wp --version")
         version.gsub!('wp-cli', '').strip!
-        log "Wordpress CLI version: #{version}"
+        log "WordPress CLI version: #{version}"
       end
 
       if !core_installed?      
         core_install
       else
         version = ssh.capture("cd #{core_path} && wp core version")
-        log "Wordpress core version: #{version}"
+        log "WordPress core version: #{version}"
       end
 
       check_config
