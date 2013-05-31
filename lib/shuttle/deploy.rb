@@ -22,5 +22,26 @@ module Shuttle
         @version = 1
       end
     end
+
+    # Get current deploy version
+    # @return [Integer]
+    def last_version
+      @last_version ||= ssh.read_file(version_path).to_i
+    end
+
+    # Get list of all existing releases
+    # @return [Array<Integer>]
+    def available_releases
+      if ssh.directory_exists?(deploy_path('releases'))
+        releases = ssh.capture("ls --color=never #{deploy_path}/releases")
+
+        releases.
+          scan(/[\d]+/).
+          map { |s| s.strip.to_i }.
+          sort
+      else
+        []
+      end
+    end
   end
 end

@@ -26,7 +26,26 @@ module Shuttle
     end
 
     def rollback
-      # TODO
+      if last_version == 0
+        error "There are no releases to rollback to"
+      end
+
+      release = available_releases.select { |v| v == last_version-1 }.first
+
+      if release
+        if ssh.run("unlink #{current_path}").failure?
+          ssh.run("rm -rf #{current_path}")
+        end
+
+        if ssh.run("ln -s #{deploy_path}/releases/#{release} #{current_path}").failure?
+          error "Unable to create symlink to current path"
+        end
+
+        ssh.run("echo #{version} > #{version_path}")
+        log "Rolled back to release v#{release}"
+      else
+        error "There are no older releases"
+      end
     end
 
     def update_code
