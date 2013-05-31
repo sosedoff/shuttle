@@ -19,8 +19,22 @@ module Shuttle
 
       setup_shared_dirs
       check_dependencies
-      cli_install if !cli_installed?
-      core_install if !core_installed?
+
+      if !cli_installed?
+        cli_install
+      else
+        version = ssh.capture("cd #{core_path} && wp --version")
+        version.gsub!('wp-cli', '').strip!
+        log "Wordpress CLI version: #{version}"
+      end
+
+      if !core_installed?      
+        core_install
+      else
+        version = ssh.capture("cd #{core_path} && wp core version")
+        log "Wordpress core version: #{version}"
+      end
+
       check_config
     end
 
@@ -87,13 +101,13 @@ module Shuttle
       if res.success?
         log "A new wordpress config has been generated"
       else
-        error "Unable to generate config"
+        error "Unable to generate config. Error: #{res.output}"
       end
     end
 
     def check_config
-      if !ssh.file_exists?(shared_path('wp-config.php'))
-        log "Creating wordpress config at 'shared/wp-config.php'"
+      if !ssh.file_exists?(shared_path('wordpress/core/wp-config.php'))
+        log "Creating wordpress config"
         generate_config
       end
     end
