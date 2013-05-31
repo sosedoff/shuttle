@@ -3,14 +3,10 @@ module Shuttle
     CLI_GIT  = 'https://github.com/wp-cli/wp-cli.git'
     CLI_PATH = '/usr/local/share/wp-cli'
 
-    # Check if CLI is installed
-    # @return [Boolean]
     def cli_installed?
       ssh.run("which wp").success?
     end
 
-    # Install wordpress CLI
-    # @return [Boolean]
     def cli_install
       log "Installing wordpress CLI"
 
@@ -27,6 +23,11 @@ module Shuttle
       else
         error "Unable to install wordpress CLI"
       end
+    end
+
+    def cli_uninstall
+      ssh.run("sudo rm $(which wp)")
+      ssh.run("sudo rm -rf #{CLI_PATH}")
     end
   end
 end
