@@ -20,7 +20,7 @@ module Shuttle
         tag = rev = config.wordpress.cli
       end
 
-      ssh.run("cd #{CLI_PATH} && git checkout #{rev}")
+      ssh.run("cd #{CLI_PATH} && sudo git checkout #{rev}")
       ssh.run("cd #{CLI_PATH} && sudo utils/dev-build")
       
       if cli_installed?
