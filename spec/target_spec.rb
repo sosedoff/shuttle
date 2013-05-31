@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Shuttle::Target do
-  let(:target) { Target.new(attributes) }
+  let(:target) { Shuttle::Target.new(attributes) }
 
   describe '#connection' do
     let(:attributes) do
@@ -9,13 +9,11 @@ describe Shuttle::Target do
     end
 
     it 'returns a new ssh session connection' do
-      expect(target.connection). be_a Net::SSH::Session
+      expect(target.connection).to be_a Net::SSH::Session
     end
   end
 
   describe '#validate!' do
-    subject { Shuttle::Target.new(attributes) }
-
     context 'with valid attributes' do
       let(:attributes) do
         {:host => 'host.com', :user => 'user', :deploy_to => '/home'}
