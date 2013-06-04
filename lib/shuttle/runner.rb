@@ -18,7 +18,11 @@ module Shuttle
     end
 
     def load_config
-      data = File.read(config_path)
+      data = File.read(config_path).strip
+
+      if data.empty?
+        raise ConfigError, "Configuration file is empty"
+      end
 
       if config_path =~ /\.toml$/
         parse_toml_data(data)
