@@ -136,5 +136,9 @@ describe Shuttle::CLI do
       cli.find_config
       expect(cli.options[:path]).to eq '/tmp/.shuttle/shuttle.yml'
     end
+
+    it 'terminates if no config files found' do
+      expect { cli.find_config }.to raise_error SystemExit
+    end
   end
 end
