@@ -80,6 +80,7 @@ module Shuttle
     def find_config
       return if try_config("#{@path}/shuttle.yml")
       return if try_config("#{@path}/config/deploy.yml")
+      return if try_config("#{@path}/config/deploy/#{options[:target]}.yml")
       return if try_config("#{ENV['HOME']}/.shuttle/#{File.basename(Dir.pwd)}.yml")
 
       if @options[:path].nil?
