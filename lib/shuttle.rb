@@ -13,6 +13,7 @@ require 'shuttle/version'
 require 'shuttle/errors'
 
 module Shuttle
+  autoload :CLI,         'shuttle/cli'
   autoload :Session,     'shuttle/session'
   autoload :Runner,      'shuttle/runner'
   autoload :Deploy,      'shuttle/deploy'

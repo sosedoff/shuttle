@@ -4,57 +4,6 @@ lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 
 require 'rubygems'
-require 'optparse'
 require 'shuttle'
 
-config_name = Dir.pwd.split('/').last + ".yml"
-
-options = {
-  :path   => File.join(ENV['HOME'], '.shuttle', config_name),
-  :target => 'production',
-  :log    => false
-}
-
-optparse = OptionParser.new do |opts|
-  opts.on('-v', '--version', 'Show version') do
-    puts "Shuttle version #{Shuttle::VERSION}"
-    exit 0
-  end
-
-  opts.on('-e', '--environment NAME', 'Deployment target environment') do |v|
-    options[:target] = v
-  end
-
-  opts.on('-d', '--debug', 'Enable debugging') do
-    options[:log] = true
-  end
-
-  opts.on('-f', '--file PATH', 'Configuration file path') do |v|
-    options[:path] = v
-  end
-end
-
-begin
-  optparse.parse!
-rescue OptionParser::ParseError => e
-  puts "Error: #{e.message}"
-  exit 1
-end
-
-case ARGV.size
-when 2
-  options[:target] = ARGV.shift
-  command = ARGV.shift
-when 1
-  command = ARGV.shift
-else
-  puts "Command required"
-  exit 1
-end
-
-begin
-  runner = Shuttle::Runner.new(options)
-  runner.execute(command.dup)
-rescue Shuttle::ConfigError => err
-  puts "Error: #{err.message}."
-end
+Shuttle::CLI.new.run
