@@ -34,6 +34,17 @@ describe Shuttle::CLI do
   describe '#parse_command' do
     let(:cli) { Shuttle::CLI.new }
 
+    context 'with no arguments' do
+      before do
+        ARGV.stub(:size).and_return(0)
+        cli.should_receive(:terminate).with("Command required")
+      end
+
+      it 'terminates execution with message' do
+        cli.parse_command
+      end
+    end
+
     context 'with 1 argument' do
       before do
         ARGV = %w(deploy)
@@ -60,9 +71,10 @@ describe Shuttle::CLI do
       end
     end
 
-    context 'with no arguments' do
+    context 'with too many arguments' do
       before do
-        cli.should_receive(:terminate).with("Command required")
+        ARGV.stub(:size).and_return(3)
+        cli.should_receive(:terminate).with("Maximum of 2 arguments allowed")
       end
 
       it 'terminates execution with message' do

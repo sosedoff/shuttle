@@ -65,13 +65,15 @@ module Shuttle
 
     def parse_command
       case ARGV.size
+      when 0
+        terminate("Command required")
+      when 1
+        @command = ARGV.shift
       when 2
         @options[:target] = ARGV.shift
         @command = ARGV.shift
-      when 1
-        @command = ARGV.shift
       else
-        terminate("Command required")
+        terminate("Maximum of 2 arguments allowed")
       end
     end
 
