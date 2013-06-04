@@ -100,30 +100,39 @@ describe Shuttle::CLI do
   end
 
   describe '#find_config' do
-    let(:path) { '/tmp' }
+    let(:path) { "/tmp" }
     let(:cli)  { Shuttle::CLI.new(path) }
 
     it 'searches for ./shuttle.yml file' do
-      File.stub(:exists?).with("/tmp/shuttle.yml").and_return(true)
-
+      File.should_receive(:exists?).with("/tmp/shuttle.yml").and_return(true)
       cli.find_config
       expect(cli.options[:path]).to eq "/tmp/shuttle.yml"
     end
 
     it 'searches for ./config/deploy.yml file' do
-      File.stub(:exists?).with("/tmp/deploy.yml").and_return(false)
-      File.stub(:exists?).with("/tmp/config/deploy.yml").and_return(true)
+      File.should_receive(:exists?).with("/tmp/shuttle.yml").and_return(false)
+      File.should_receive(:exists?).with("/tmp/config/deploy.yml").and_return(true)
 
       cli.find_config
       expect(cli.options[:path]).to eq "/tmp/config/deploy.yml"
     end
 
+    it 'searches for ./config/deploy/production.yml' do
+      File.should_receive(:exists?).with("/tmp/shuttle.yml").and_return(false)
+      File.should_receive(:exists?).with("/tmp/config/deploy.yml").and_return(false)
+      File.should_receive(:exists?).with("/tmp/config/deploy/production.yml").and_return(true)
+
+      cli.find_config
+      expect(cli.options[:path]).to eq "/tmp/config/deploy/production.yml"
+    end
+
     it 'searches foe ~/.shuttle/NAME.yml' do
       ENV['HOME'] = "/tmp"
-      File.stub(:exists?).with("/tmp/deploy.yml").and_return(false)
-      File.stub(:exists?).with("/tmp/config/deploy.yml").and_return(true)
-      File.stub(:exists?).with("/tmp/.shuttle/shuttle.yml").and_return(true)
-
+      File.should_receive(:exists?).with("/tmp/shuttle.yml").and_return(false)
+      File.should_receive(:exists?).with("/tmp/config/deploy.yml").and_return(false)
+      File.should_receive(:exists?).with("/tmp/config/deploy/production.yml").and_return(false)
+      File.should_receive(:exists?).with("/tmp/.shuttle/shuttle.yml").and_return(true)
+      
       cli.find_config
       expect(cli.options[:path]).to eq '/tmp/.shuttle/shuttle.yml'
     end
