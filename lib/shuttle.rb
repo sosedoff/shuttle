@@ -31,7 +31,6 @@ module Shuttle
 
   module Support
     autoload :Bundler,   'shuttle/support/bundler'
-    autoload :Foreman,   'shuttle/support/foreman'
     autoload :Thin,      'shuttle/support/thin'
   end
 end
