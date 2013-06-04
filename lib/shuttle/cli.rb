@@ -78,9 +78,9 @@ module Shuttle
     end
 
     def find_config
-      try_config("#{@path}/shuttle.yml")
-      try_config("#{@path}/config/deploy.yml")
-      try_config("#{ENV['HOME']}/.shuttle/#{File.basename(Dir.pwd)}.yml")
+      return if try_config("#{@path}/shuttle.yml")
+      return if try_config("#{@path}/config/deploy.yml")
+      return if try_config("#{ENV['HOME']}/.shuttle/#{File.basename(Dir.pwd)}.yml")
 
       if @options[:path].nil?
         terminate("Please provide config with -f option.")
@@ -90,7 +90,10 @@ module Shuttle
     def try_config(path)
       if File.exists?(path)
         @options[:path] = path
+        return true
       end
+
+      false
     end
   end
 end

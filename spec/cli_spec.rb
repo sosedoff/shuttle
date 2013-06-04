@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Shuttle::CLI do
+  let(:cli) { Shuttle::CLI.new }
+
   describe '#initialize' do
     it 'assigns current path' do
       Dir.stub(:pwd).and_return('/home/user')
@@ -21,7 +23,7 @@ describe Shuttle::CLI do
   end
 
   describe '#default_options' do
-    let(:opts) { Shuttle::CLI.new.default_options }
+    let(:opts) { cli.default_options }
 
     it 'returns a hash with default options' do
       expect(opts).to be_a Hash
@@ -32,8 +34,6 @@ describe Shuttle::CLI do
   end
 
   describe '#parse_command' do
-    let(:cli) { Shuttle::CLI.new }
-
     context 'with no arguments' do
       before do
         ARGV.stub(:size).and_return(0)
@@ -80,6 +80,52 @@ describe Shuttle::CLI do
       it 'terminates execution with message' do
         cli.parse_command
       end
+    end
+  end
+
+  describe '#try_config' do
+    it 'does not change path if file does not exist' do
+      File.stub(:exists?).and_return(false)
+
+      expect(cli.try_config('foo/bar')).to eq false
+      expect(cli.options[:path]).to eq nil
+    end
+
+    it 'changes config path if file exists' do
+      File.stub(:exists?).with('foo/bar').and_return(true)
+
+      expect(cli.try_config('foo/bar')).to eq true
+      expect(cli.options[:path]).to eq 'foo/bar'
+    end
+  end
+
+  describe '#find_config' do
+    let(:path) { '/tmp' }
+    let(:cli)  { Shuttle::CLI.new(path) }
+
+    it 'searches for ./shuttle.yml file' do
+      File.stub(:exists?).with("/tmp/shuttle.yml").and_return(true)
+
+      cli.find_config
+      expect(cli.options[:path]).to eq "/tmp/shuttle.yml"
+    end
+
+    it 'searches for ./config/deploy.yml file' do
+      File.stub(:exists?).with("/tmp/deploy.yml").and_return(false)
+      File.stub(:exists?).with("/tmp/config/deploy.yml").and_return(true)
+
+      cli.find_config
+      expect(cli.options[:path]).to eq "/tmp/config/deploy.yml"
+    end
+
+    it 'searches foe ~/.shuttle/NAME.yml' do
+      ENV['HOME'] = "/tmp"
+      File.stub(:exists?).with("/tmp/deploy.yml").and_return(false)
+      File.stub(:exists?).with("/tmp/config/deploy.yml").and_return(true)
+      File.stub(:exists?).with("/tmp/.shuttle/shuttle.yml").and_return(true)
+
+      cli.find_config
+      expect(cli.options[:path]).to eq '/tmp/.shuttle/shuttle.yml'
     end
   end
 end
