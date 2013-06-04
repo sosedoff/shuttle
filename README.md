@@ -1,4 +1,4 @@
-# Shuttle
+# Shuttle ![Build Status](https://magnum-ci.com/status/dea40dc3b6055d6a628a444149e2fead.png)
 
 Shuttle is a minimalistic application deployment tool designed for small applications 
 and one-server deployments. Configuration is stored as YAML-encoded file, no need to use ruby code. 
