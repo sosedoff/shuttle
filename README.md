@@ -88,7 +88,62 @@ target:
 ### WordPress Strategy
 
 This strategy is designed to deploy wordpress sites developed as a separate theme. 
-It requires `subversion` installed on the server (will be automatically installed). 
+It requires `subversion` installed on the server (will be automatically installed).
+
+Define strategy:
+
+```
+app:
+  strategy: wordpress
+```
+
+Wordpress applications are configured and deployed with `wp` cli utility. On a clean setup 
+shuttle will attempt to install wp-cli and wordpress core first. CLI is installed from 
+main github repository and latest stable tag. Wordpress core will install latest version.
+To specify required versions, use wordpress section:
+
+```
+wordpress:
+  core: 3.5.1
+  cli: 0.9.1
+```
+
+Then, you'll need to define theme and wp related options:
+
+```
+wordpress:
+  theme: my-theme
+  site:
+    title: "Site Title"
+    url: "http://sample-site.com"
+    admin_name: "admin"
+    admin_email: "admin@admin.com"
+    admin_password: "password"
+```
+
+Database options:
+
+```
+wordpress:
+  mysql: 
+    host: 127.0.0.1
+    user: mysql-user
+    password: mysql-password
+    database: mysql-database
+```
+
+You can also provide a list of required plugins:
+
+```
+wordpress:
+  plugins:
+    - acf
+    - acf: git://github.com/elliotcondon/acf.git
+    - acf: http://my-site.com/acf.zip
+    - acf: http://my-site.com/acf.tar.gz
+```
+
+For more detailed example, check `examples/wordpress.yml`
 
 ### Rails Strategy
 
