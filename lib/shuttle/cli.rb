@@ -3,9 +3,11 @@ require 'optparse'
 module Shuttle
   class CLI
     attr_reader :options, :command
+    attr_reader :path
 
     def initialize(path=nil)
-      @path = File.expand_path(path || Dir.pwd)
+      @path    = File.expand_path(path || Dir.pwd)
+      @options = default_options
     end
 
     def run
@@ -35,8 +37,6 @@ module Shuttle
     end
 
     def parse_options
-      @options = default_options
-
       parser = OptionParser.new do |opts|
         opts.on('-v', '--version', 'Show version') do
           puts "Shuttle version #{Shuttle::VERSION}"
