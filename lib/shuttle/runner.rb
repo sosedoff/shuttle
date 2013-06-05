@@ -133,7 +133,7 @@ module Shuttle
           exit_code = 1
         rescue Exception => err
           integration.cleanup_release
-          integration.log("ERROR: #{err.message}", 'error')
+          integration.log("Shuttle ERROR: #{err.message}", 'error')
           exit_code = 1
         ensure
           integration.release_lock
