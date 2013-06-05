@@ -1,32 +1,47 @@
 app:
+  # name of the app
   name: sample-site
   strategy: wordpress
+  # source repository containing your theme
   git: git@github.com/username/sample-site.git
+  # svn: https://some-svn-repo.com/sample-site
   branch: production
 
+# Where to deploy
 target:
+  # host name or ip
   host: sample-site.com
+  # Credentials for user that'll run deploy
   user: deployer
   password: password
+  # Deploy path
   deploy_to: /home/deployer/www
 
 wordpress:
+  # Core version
   core: 3.5.1
+  # wp-cli version. See wp-cli.org
   cli: 0.9.1
-  theme: theme_name
+  # Theme name for source repo, should match theme slug
+  theme: sample-site
+  # Basic WP settings
   site:
     title: "Site Title"
     url: "http://sample-site.com"
     admin_name: "admin"
     admin_email: "admin@admin.com"
     admin_password: "password"
+  # MySQL config
   mysql: 
     host: 127.0.0.1
     user: mysql-user
     password: mysql-password
     database: mysql-dadtabase
+  # Plugins that you need for the site  
   plugins:
+    # Grab a plugin from any git/svn repo
     - advanced-custom-fields: git://github.com/elliotcondon/acf.git
+    # Install directly from wp plugins repo
     - be-subpages-widget
     - contact-form-7
     - contact-form-7-to-database-extension
