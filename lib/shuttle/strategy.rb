@@ -26,6 +26,8 @@ module Shuttle
     end
 
     def rollback
+      execute_hook(:before_rollback)
+
       if last_version == 0
         error "There are no releases to rollback to"
       end
@@ -46,6 +48,8 @@ module Shuttle
       else
         error "There are no older releases"
       end
+
+      execute_hook(:after_rollback)
     end
 
     def update_code
