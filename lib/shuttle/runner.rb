@@ -154,7 +154,7 @@ module Shuttle
 
       ssh.close
     rescue Net::SSH::AuthenticationFailed
-      STDERR.puts "Authentication failed"
+      STDERR.puts "SSH Authentication failed"
       exit 1
     end
   end
