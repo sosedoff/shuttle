@@ -276,19 +276,7 @@ module Shuttle
     end
 
     def execute_commands(commands=[], allow_failures=false)
-      commands.flatten.compact.uniq.each do |cmd|
-        log %{Executing "#{cmd.strip}"}
-        command = cmd
-        command = "cd #{release_path} && #{command}" if ssh.directory_exists?(release_path)
-
-        result = ssh.run(command)
-
-        if result.failure? && allow_failures == false
-          error "Failed: #{result.output}"
-        else
-          stream_output(result.output)
-        end
-      end
+      Shuttle::Hook.new(self).run(commands, allow_failures)
     end
   end
 end

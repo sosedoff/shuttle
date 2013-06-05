@@ -21,6 +21,7 @@ module Shuttle
   autoload :Helpers,     'shuttle/helpers'
   autoload :PathHelpers, 'shuttle/path_helpers'
   autoload :Strategy,    'shuttle/strategy'
+  autoload :Hook,        'shuttle/hook'
 
   autoload :Static,      'shuttle/deployment/static'
   autoload :Php,         'shuttle/deployment/php'
