@@ -43,7 +43,9 @@ module Shuttle
           error "Unable to create symlink to current path"
         end
 
-        ssh.run("echo #{version} > #{version_path}")
+        ssh.run("echo #{release} > #{version_path}")
+        ssh.run("rm -rf #{deploy_path}/releases/#{last_version}")
+
         log "Rolled back to release v#{release}"
       else
         error "There are no older releases"
