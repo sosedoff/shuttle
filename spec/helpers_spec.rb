@@ -19,8 +19,12 @@ describe Shuttle::Helpers do
   end
 
   describe '#error' do
+    before { subject.stub(:version).and_return(1) }
+
     it 'prints an error message' do
       STDOUT.should_receive(:puts).with("\e[1m\e[31m----->\e[0m ERROR: message")
+      STDOUT.should_receive(:puts).with("\e[1m\e[31m----->\e[0m Release v1 aborted")
+
       expect { subject.error('message') }.to raise_error Shuttle::DeployError
     end
 
