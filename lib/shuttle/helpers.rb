@@ -12,7 +12,8 @@ module Shuttle
     end
 
     def error(message)
-      log("ERROR: #{message}", 'error')
+      log("ERROR: #{message}", "error")
+      log("Release v#{version} aborted", "error")
       raise DeployError, message
     end
 
