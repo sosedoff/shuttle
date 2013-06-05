@@ -138,6 +138,12 @@ describe Shuttle::CLI do
     end
 
     it 'terminates if no config files found' do
+      ENV['HOME'] = "/tmp"
+      File.should_receive(:exists?).with("/tmp/shuttle.yml").and_return(false)
+      File.should_receive(:exists?).with("/tmp/config/deploy.yml").and_return(false)
+      File.should_receive(:exists?).with("/tmp/config/deploy/production.yml").and_return(false)
+      File.should_receive(:exists?).with("/tmp/.shuttle/shuttle.yml").and_return(false)
+
       expect { cli.find_config }.to raise_error SystemExit
     end
   end
