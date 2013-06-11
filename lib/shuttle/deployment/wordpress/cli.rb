@@ -10,6 +10,29 @@ module Shuttle
     def cli_install
       log "Installing WordPress CLI"
 
+      rev, tag = cli_checkout_code
+
+      res = ssh.run("cd #{CLI_PATH} && sudo utils/dev-build")
+
+      if res.failure?
+        error "Unable to build cli: #{res.output}"
+      end
+      
+      if cli_installed?
+        log "WordPress CLI (#{tag}) installed"
+      else
+        error "Wordpress CLI installation failed"
+      end
+    end
+
+    # Checkout a proper wp-cli revision. By default it'll install
+    # latest available tag from git. That's considered a stable version.
+    # To install latest code, set `cli` option in config:
+    #
+    #   wordpress:
+    #     cli: master 
+    #
+    def cli_checkout_code
       ssh.run("sudo git clone --recursive --quiet #{CLI_GIT} #{CLI_PATH}")
 
       if config.wordpress.cli.nil?
@@ -32,17 +55,7 @@ module Shuttle
         error "Unable to checkout revision #{rev}: #{res.output}"
       end
 
-      res = ssh.run("cd #{CLI_PATH} && sudo utils/dev-build")
-
-      if res.failure?
-        error "Unable to build cli: #{res.output}"
-      end
-      
-      if cli_installed?
-        log "WordPress CLI (#{tag}) installed"
-      else
-        error "Unable to install WordPress CLI"
-      end
+      rev, tag
     end
 
     def cli_uninstall
