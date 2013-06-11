@@ -17,7 +17,13 @@ module Shuttle
         tag  = tags.first
         rev  = ssh.capture("cd #{CLI_PATH} && git rev-parse #{tag}").strip
       else
-        tag = rev = config.wordpress.cli
+        tag = config.wordpress.cli
+
+        if tag =~ /^[\d\.]+$/ # version def
+          tag = "v#{tag}" unless tag =~ /v[\d]+/
+        end
+        
+        rev = tag
       end
 
       res = ssh.run("cd #{CLI_PATH} && sudo git checkout #{rev}")
