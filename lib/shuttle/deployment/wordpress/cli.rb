@@ -55,7 +55,7 @@ module Shuttle
         error "Unable to checkout revision #{rev}: #{res.output}"
       end
 
-      rev, tag
+      #rev, tag
     end
 
     def cli_uninstall
