@@ -43,6 +43,8 @@ wordpress:
     - advanced-custom-fields: git://github.com/elliotcondon/acf.git
     # Install directly from wp plugins repo
     - be-subpages-widget
+    # Install from a custom url (zip or tar.gz only)
+    - my-plugin: http://mydomain.com/file.zip
     - contact-form-7
     - contact-form-7-to-database-extension
     - featured-page-widget
