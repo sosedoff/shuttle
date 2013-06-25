@@ -106,8 +106,12 @@ module Shuttle
       if config.rails
         if config.rails.shared_paths
           config.rails.shared_paths.each_pair do |name, path|
-            log "Linking shared path: #{name}"
-            ssh.run("ln -s #{shared_path}/#{name} #{release_path}/#{path}")
+            if ssh.file_exists?(path)
+              log "Linking shared path: #{name}"
+              ssh.run("ln -s #{shared_path}/#{name} #{release_path}/#{path}")
+            else
+              error "Shared path does not exist: #{path}"
+            end
           end
         end
       end
