@@ -17,13 +17,22 @@ module Shuttle
     def run
       parse_options
       parse_command
-      find_config
 
-      begin
-        runner = Shuttle::Runner.new(@options)
-        runner.execute(@command.dup)
-      rescue Shuttle::ConfigError => err
-        terminate(err.message)
+      if @command == 'generate'
+        begin
+          generator = Shuttle::Generator.new.run
+        rescue Exception => err
+          terminate(err.message)
+        end
+      else
+        find_config
+
+        begin
+          runner = Shuttle::Runner.new(@options)
+          runner.execute(@command.dup)
+        rescue Shuttle::ConfigError => err
+          terminate(err.message)
+        end
       end
     end
 

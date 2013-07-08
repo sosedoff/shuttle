@@ -4,6 +4,7 @@ module Shuttle
 
     STRATEGIES = %w(static wordpress rails)
 
+    attr_reader :strategy
     attr_reader :name, :git, :path
 
     def initialize(strategy='static')
@@ -11,6 +12,7 @@ module Shuttle
         raise ArgumentError, "Invalid strategy: #{strategy}"
       end
 
+      @strategy = strategy
       @path = File.join(Dir.pwd, 'shuttle.yml')
     end
 
@@ -31,15 +33,15 @@ module Shuttle
 
     def generate_static
       {
-        :app => {
-          :name => name,
-          :git  => git
+        'app' => {
+          'name' => name,
+          'git'  => git
         },
-        :target => {
-          :host      => "mysite.com",
-          :user      => "deployer",
-          :password  => "password",
-          :deploy_to => "/home/deployer/#{name}"
+        'target' => {
+          'host'      => "mysite.com",
+          'user'      => "deployer",
+          'password'  => "password",
+          'deploy_to' => "/home/deployer/#{name}"
         }
       }
     end
