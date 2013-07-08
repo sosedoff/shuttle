@@ -111,12 +111,12 @@ module Shuttle
 
     def lookup_files
       [
-        "#{options[:path]}",
+        options[:path],
         "#{@path}/shuttle.yml",
         "#{@path}/config/deploy.yml",
         "#{@path}/config/deploy/#{options[:target]}.yml",
         "#{ENV['HOME']}/.shuttle/#{File.basename(Dir.pwd)}.yml"
-      ]
+      ].compact
     end
   end
 end
