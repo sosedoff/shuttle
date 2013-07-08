@@ -102,6 +102,7 @@ module Shuttle
 
     def lookup_files
       [
+        "#{options[:path]}",
         "#{@path}/shuttle.yml",
         "#{@path}/config/deploy.yml",
         "#{@path}/config/deploy/#{options[:target]}.yml",
