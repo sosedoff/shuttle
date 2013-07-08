@@ -5,6 +5,10 @@ module Shuttle
     attr_reader :options, :command
     attr_reader :path
 
+    def self.run
+      Shuttle::CLI.new.run
+    end
+
     def initialize(path=nil)
       @path    = File.expand_path(path || Dir.pwd)
       @options = default_options
