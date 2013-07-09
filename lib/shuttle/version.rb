@@ -1,3 +1,3 @@
 module Shuttle
-  VERSION = '0.2.0.beta8'
+  VERSION = '0.2.0.beta9'
 end
