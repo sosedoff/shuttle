@@ -155,6 +155,9 @@ module Shuttle
       end
 
       ssh.close
+    rescue SocketError => err
+      STDERR.puts "Socket error: #{err.message}"
+      exit 1
     rescue Net::SSH::AuthenticationFailed
       STDERR.puts "SSH Authentication failed"
       exit 1
