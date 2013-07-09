@@ -143,6 +143,9 @@ module Shuttle
     end
 
     def checkout_code(path=nil)
+      # Trigger hook before checking out code
+      execute_hook(:before_checkout_code)
+
       checkout_path = [release_path, path].compact.join('/')
       res = ssh.run("cp -a #{scm_path} #{checkout_path}")
       
@@ -152,6 +155,9 @@ module Shuttle
         ssh.run("cd #{release_path} && rm -rf $(find . | grep .git)")
         ssh.run("cd #{release_path} && rm -rf $(find . -name .svn)")
       end
+
+      # Trigger hook after checking out code
+      execute_hook(:after_checkout_code)
     end
 
     def link_release
