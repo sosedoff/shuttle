@@ -323,6 +323,15 @@ To run in debug mode, add `-d` flag:
 shuttle deploy -d
 ```
 
+## Generators
+
+You can generate deployment config with CLI:
+
+```
+shuttle generate static
+```
+
+
 ## Test
 
 To run project test suite execute:
