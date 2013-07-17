@@ -323,6 +323,25 @@ To run in debug mode, add `-d` flag:
 shuttle deploy -d
 ```
 
+## Rollback
+
+In case if you want to revert latest deploy, run:
+
+```
+shuttle rollback
+```
+
+Last release will be permanently destroyed and previous release will be symlinked
+as current. If you wish to run some commands on rollback, you can specify a hook:
+
+```yaml
+hooks:
+  before_rollback:
+    - bash commands
+  after_rollback:
+    - bash commands
+```
+
 ## Generators
 
 You can generate deployment config with CLI:
@@ -330,7 +349,6 @@ You can generate deployment config with CLI:
 ```
 shuttle generate static
 ```
-
 
 ## Test
 
