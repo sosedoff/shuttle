@@ -47,7 +47,11 @@ module Shuttle
     end
 
     def generate_wordpress
-      # TODO
+      base = generate_static
+
+      base['environment']       = ask('Rails env:', 'production')
+      base['precompile_assets'] = ask('Precompile assets', 'yes')
+      base['start_server']      = ask('Start server', true)
     end
 
     def generate_rails
