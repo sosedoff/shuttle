@@ -18,6 +18,10 @@ module Shuttle
       raise DeployError, message
     end
 
+    def warn(message)
+      log("WARNING: #{message}", "warning")
+    end
+
     def git_installed?
       ssh.run("which git").success?
     end

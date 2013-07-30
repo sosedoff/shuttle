@@ -36,7 +36,7 @@ module Shuttle
         if res.success?
           log "WordPress core version: #{res.output}"
         else
-          error "Unable to detect WordPress core version: #{res.output}"
+          warn "Unable to detect WordPress core version: #{res.output}"
         end
       end
 
