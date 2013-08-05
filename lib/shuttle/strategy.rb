@@ -62,6 +62,8 @@ module Shuttle
       error "Git is not installed" if !git_installed?
       error "Git source url is not defined. Please define :git option first" if config.app.git.nil?
 
+      branch = config.app.branch || 'master'
+
       if ssh.directory_exists?(scm_path)
         # Check if git remote has changed
         current_remote = git_remote
@@ -76,7 +78,7 @@ module Shuttle
         end
 
         log "Fetching latest code"
-        res = ssh.run "cd #{scm_path} && git pull origin master"
+        res = ssh.run "cd #{scm_path} && git pull origin #{branch}"
 
         if res.failure?
           error "Unable to fetch latest code: #{res.output}"
@@ -89,8 +91,6 @@ module Shuttle
           error "Failed to clone repository: #{res.output}"
         end
       end
-
-      branch = config.app.branch || 'master'
 
       ssh.run("cd #{scm_path} && git fetch")
 
