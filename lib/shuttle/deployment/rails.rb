@@ -15,6 +15,10 @@ module Shuttle
       config.rails && config.rails.precompile_assets != false
     end
 
+    def cache_assets?
+      config.rails && config.rails.cache_assets == true
+    end
+
     def start_server?
       if config.rails && !config.rails.start_server.nil?
         config.rails.start_server
@@ -43,10 +47,30 @@ module Shuttle
       end
     end
 
+    # Precompile rails assets. If no changes detected between last and 
+    # current releases, precompile task will be skipped.
     def precompile_assets
       if precompile_assets?
-        log "Precompiling assets"
-        rake 'assets:precompile'
+        precompile = true
+
+        # Detect if there any change in assets
+        if cache_assets? && last_version != version
+          old_path = deploy_path("releases/#{last_version}")
+          new_path = release_path
+
+          result = ssh.run("diff -arq #{old_path}/app/assets #{new_path}/app/assets")
+          if result.success?
+            precompile = false
+            ssh.run("cp -a #{old_path}/public/assets #{new_path}/public/")
+          end
+        end
+
+        if precompile
+          log "Precompiling assets"
+          rake 'assets:precompile'
+        else
+          log "Asset procompilation skipped"
+        end
       end
     end
 
