@@ -184,6 +184,10 @@ module Shuttle
         error "Unable to create symlink to current path"
       end
 
+      # Write version into RELEASE file
+      write_release
+
+      # Write version into current version file
       ssh.run "echo #{version} > #{version_path}"
 
       log "Release v#{version} has been deployed"
@@ -239,6 +243,10 @@ module Shuttle
           ssh.run("cd #{scm_path} && #{command} > #{release_path}/REVISION")
         end
       end
+    end
+
+    def write_release
+      ssh.run("echo #{version} > #{release_path}/RELEASE")
     end
 
     def export_environment
