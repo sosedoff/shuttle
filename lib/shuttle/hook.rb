@@ -26,7 +26,9 @@ module Shuttle
       if result.failure? && allow_failures == false
         @deploy.error("Failed: #{result.output}")
       else
-        @deploy.stream_output(result.output)
+        if !result.output.empty?
+          @deploy.stream_output(result.output)
+        end
       end
     end
   end
