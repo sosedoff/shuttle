@@ -12,7 +12,11 @@ module Shuttle
     end
 
     def precompile_assets?
-      config.rails && config.rails.precompile_assets != false
+      if ENV["ASSETS"]
+        true
+      else
+        config.rails && config.rails.precompile_assets != false
+      end
     end
 
     def cache_assets?
