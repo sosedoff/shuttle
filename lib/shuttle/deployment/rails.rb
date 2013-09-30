@@ -45,7 +45,7 @@ module Shuttle
     end
 
     def rake(command)
-      res = ssh.run("cd #{release_path} && rake #{command}")
+      res = ssh.run("cd #{release_path} && bundle exec rake #{command}")
       if res.failure?
         error "Unable to run rake command: #{command}. Reason: #{res.output}"
       end
