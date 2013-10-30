@@ -118,7 +118,7 @@ module Shuttle
     end
 
     def site_installed?
-      ssh.run("cd #{release_path} && wp").success?
+      ssh.run("cd #{release_path} && wp core version").success?
     end
 
     def site_install
