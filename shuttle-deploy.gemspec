@@ -8,7 +8,8 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/sosedoff/shuttle"
   s.authors     = ["Dan Sosedoff"]
   s.email       = ["dan.sosedoff@gmail.com"]
-  
+  s.license     = "MIT"
+
   s.add_development_dependency 'rake',      '~> 10'
   s.add_development_dependency 'rspec',     '~> 2.13'
   s.add_development_dependency 'simplecov', '~> 0.7'
