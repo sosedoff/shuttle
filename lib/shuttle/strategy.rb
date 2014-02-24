@@ -249,6 +249,10 @@ module Shuttle
       ssh.run("echo #{version} > #{release_path}/RELEASE")
     end
 
+    def disable_history
+      ssh.run("set +o history")
+    end
+
     def export_environment
       ssh.export_hash(
         'DEPLOY_APP'          => config.app.name,

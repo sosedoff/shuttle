@@ -117,6 +117,7 @@ module Shuttle
             integration.error(message)
           end
 
+          integration.disable_history
           integration.write_lock
           integration.export_environment
           integration.send(command.to_sym)
