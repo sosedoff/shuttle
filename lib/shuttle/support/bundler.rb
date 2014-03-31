@@ -30,6 +30,7 @@ module Shuttle
           "bundle install",
           "--quiet",
           "--path #{bundle_path}",
+          "--retry=3",
           "--binstubs",
           "--deployment"
         ].join(' ')
