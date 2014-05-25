@@ -44,9 +44,12 @@ module Shuttle
       end
     end
 
-    def rake(command)
-      res = ssh.run("cd #{release_path} && bundle exec rake #{command}")
-      if res.failure?
+    def rake(command, print_output = false)
+      result = ssh.run("cd #{release_path} && bundle exec rake #{command}")
+
+      if result.success?
+        puts result.output if print_output
+      else
         error "Unable to run rake command: #{command}. Reason: #{res.output}"
       end
     end
@@ -118,7 +121,7 @@ module Shuttle
 
       if migrate == true
         log "Migrating database"
-        rake 'db:migrate'
+        rake("db:migrate", true)
         ssh.run("echo #{checksum} > #{schema_file}")
       else
         log "Database migration skipped"
