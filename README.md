@@ -322,6 +322,18 @@ To run in debug mode, add `-d` flag:
 ```
 shuttle deploy -d
 ```
+## Hooks
+
+List of all available hooks that you can use to run custom commands:
+
+- `before_setup`
+- `after_setup`
+- `before_rollback`
+- `after_rolback`
+- `before_checkout_code`
+- `after_checkout_core`
+- `before_link_release`
+- `after_link_release`
 
 ## Rollback
 
