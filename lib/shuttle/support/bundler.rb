@@ -32,7 +32,8 @@ module Shuttle
           "--path #{bundle_path}",
           "--retry=3",
           "--binstubs",
-          "--deployment"
+          "--deployment",
+          "--without development,test"
         ].join(' ')
 
         res = ssh.run("cd #{release_path} && #{cmd}", &method(:stream_output))
