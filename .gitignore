@@ -23,3 +23,4 @@ test/version_tmp
 tmp
 tmtags
 Gemfile.lock
+.vagrant
