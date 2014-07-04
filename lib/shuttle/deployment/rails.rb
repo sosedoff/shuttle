@@ -50,7 +50,7 @@ module Shuttle
       if result.success?
         puts result.output if print_output
       else
-        error "Unable to run rake command: #{command}. Reason: #{res.output}"
+        error "Unable to run rake command: #{command}. Reason: #{result.output}"
       end
     end
 
