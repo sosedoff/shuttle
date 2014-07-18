@@ -329,7 +329,7 @@ List of all available hooks that you can use to run custom commands:
 - `before_setup`         - Before base application directories are created
 - `after_setup`          - After application directories are created
 - `before_checkout_code` - Before code update (git pull, etc)
-- `after_checkout_core`  - After code has been updated
+- `after_checkout_code`  - After code has been updated
 - `before_link_release`  - Before linking release
 - `after_link_release`   - After release has been linked
 - `before_rollback`      - Before rollback operation
