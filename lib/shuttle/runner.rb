@@ -1,3 +1,5 @@
+require "timeout"
+
 module Shuttle
   class Runner
     attr_reader :options
@@ -82,8 +84,13 @@ module Shuttle
         ssh.logger = Logger.new(STDOUT)
       end
 
-      ssh.open
-
+      begin
+        Timeout::timeout(10) { ssh.open }
+      rescue Timeout::Error
+        STDERR.puts "Unable to establish SSH connection to the server within 10 seconds"
+        exit 1
+      end
+      
       klass = Shuttle.const_get(strategy.capitalize) rescue nil
       command.gsub!(/:/,'_')
       exit_code = 0
