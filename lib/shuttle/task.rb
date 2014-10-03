@@ -8,7 +8,7 @@ module Shuttle
 
     def run
       commands = find_task_commands(@task_name)
-
+      
       if commands.nil?
         @deploy.error("Unable to find task: #{@task_name}")
       end
@@ -21,7 +21,9 @@ module Shuttle
     private
 
     def find_task_commands(name)
-      if @deploy.config.tasks.kind_of?(Hash)
+      return unless @deploy.config.tasks.kind_of?(Hash)
+
+      if @deploy.config.tasks[name]
         commands = [@deploy.config.tasks[name]]
         commands.flatten.compact
       end
