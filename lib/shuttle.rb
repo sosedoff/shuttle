@@ -22,6 +22,7 @@ module Shuttle
   autoload :PathHelpers, "shuttle/path_helpers"
   autoload :Strategy,    "shuttle/strategy"
   autoload :Hook,        "shuttle/hook"
+  autoload :Task,        "shuttle/task"
   autoload :Generator,   "shuttle/generator"
 
   autoload :Static,      "shuttle/deployment/static"

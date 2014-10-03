@@ -275,7 +275,7 @@ module Shuttle
       end
     end
 
-    def execute_hook(name, allow_failures=false)
+    def execute_hook(name, allow_failures = false)
       if config.hooks && config.hooks[name]
         execute_commands(config.hooks[name], allow_failures)
       end
@@ -298,7 +298,7 @@ module Shuttle
       result.success? ? false : true
     end
 
-    def execute_commands(commands=[], allow_failures=false)
+    def execute_commands(commands = [], allow_failures = false)
       Shuttle::Hook.new(self).run(commands, allow_failures)
     end
   end
