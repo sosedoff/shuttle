@@ -4,6 +4,9 @@ Shuttle is a minimalistic application deployment tool designed for small applica
 and one-server deployments. Configuration is stored as YAML-encoded file, no need to use ruby code. 
 Operations are performed on SSH connection with target server. 
 
+![Build Status](http://img.shields.io/travis/sosedoff/shuttle.svg?style=flat)
+![Gem Version](http://img.shields.io/gem/v/shuttle-deploy.svg?style=flat)
+
 ## Install
 
 Install from Rubygems:
