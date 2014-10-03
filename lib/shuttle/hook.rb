@@ -4,9 +4,13 @@ module Shuttle
       @deploy = deploy
     end
 
-    def run(commands, allow_failures=false)
+    def run(commands, allow_failures = false)
       [commands].flatten.compact.uniq.each do |cmd|
-        execute(cmd, allow_failures)
+        if cmd =~ /^task=\s?([A-Za-z\d\_]+)\s?/
+          Shuttle::Task.new(@deploy, $1.strip, allow_failures).run
+        else
+          execute(cmd, allow_failures)
+        end
       end
     end
 
