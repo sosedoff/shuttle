@@ -5,7 +5,7 @@ describe Shuttle::Target do
 
   describe '#connection' do
     let(:attributes) do
-      {:host => 'host.com', user: 'user', password: 'password'}
+      { :host => 'host.com', :user => 'user', :password => 'password' }
     end
 
     it 'returns a new ssh session connection' do
