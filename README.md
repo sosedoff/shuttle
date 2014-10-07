@@ -341,6 +341,32 @@ List of all available hooks that you can use to run custom commands:
 
 Each hook could include one or many bash commands.
 
+## Tasks
+
+Tasks are user-defined commands or a set of multiple commands that could be integrated
+into hooks. The benefit of having tasks defined separate from the hooks is to 
+make deployment steps more readable.
+
+Here's an example a task:
+
+```yaml
+tasks:
+  flush_cache:
+    - bundle exec cache:clear
+
+  reset_counters:
+    - bundle exec counters:submit
+    - bundle exec counters:reset
+
+hooks:
+  before_link_release:
+    - task=flush_cache
+    - task=reset_counters
+```
+
+Tasks could only be invoked from a hook, invoking a task from within another task
+does not work and intended to keep things simple.
+
 ## Rollback
 
 In case if you want to revert latest deploy, run:
