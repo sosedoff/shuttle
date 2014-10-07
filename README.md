@@ -367,6 +367,14 @@ hooks:
 Tasks could only be invoked from a hook, invoking a task from within another task
 does not work and intended to keep things simple.
 
+Commands in tasks are treated in the same way as commands in a hook, thus any failure
+of a command within a hook that does not allow any failures will trigger a deployment
+rollback. The only hook that allows failures is `after_link_release`, basically
+release is already symlinked and if something goes wrong it will not affect anything.
+
+Tasks are also a great way to split up groups of steps into smaller, more logical
+chunks.
+
 ## Rollback
 
 In case if you want to revert latest deploy, run:
