@@ -17,6 +17,10 @@ module Shuttle
 
       @config_path = config_path
       @target = target
+
+      if @options[:log]
+        ENV["SHUTTLE_DEBUG"] = "1"
+      end
     end
 
     def load_config
