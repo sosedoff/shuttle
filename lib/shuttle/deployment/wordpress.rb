@@ -118,7 +118,14 @@ module Shuttle
     end
 
     def site_installed?
-      ssh.run("cd #{release_path} && wp core version").success?
+      result = ssh.run("cd #{release_path} && wp core version")
+
+      if result.failure? && debug?
+        log "Wordpress core check failed:"
+        log result.output
+      end
+
+      result.success?
     end
 
     def site_install
