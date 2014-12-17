@@ -301,5 +301,9 @@ module Shuttle
     def execute_commands(commands = [], allow_failures = false)
       Shuttle::Hook.new(self).run(commands, allow_failures)
     end
+
+    def debug?
+      ENV["SHUTTLE_DEBUG"] ? true : false
+    end
   end
 end
