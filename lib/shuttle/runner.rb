@@ -78,7 +78,7 @@ module Shuttle
 
       validate_target(server)
 
-      ssh = Net::SSH::Session.new(server.host, server.user, server.password)
+      ssh = Net::SSH::Session.new(server.host, server.user, server.password, :port => server.port || 22)
 
       if options[:log]
         ssh.logger = Logger.new(STDOUT)
