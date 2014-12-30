@@ -118,7 +118,7 @@ module Shuttle
     end
 
     def site_installed?
-      result = ssh.run("cd #{release_path} && wp core version")
+      result = ssh.run("cd #{release_path} && wp core is-installed")
 
       if result.failure? && debug?
         log "Wordpress core check failed:"
@@ -135,7 +135,7 @@ module Shuttle
         cmd = [
           "wp core install",
           "--url=#{site.url}",
-          "--title=#{site.title}",
+          "--title=#{site.title.gsub(" ", "\\ ")}",
           "--admin_name=#{site.admin_name}",
           "--admin_email=#{site.admin_email}",
           "--admin_password=#{site.admin_password}"
