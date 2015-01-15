@@ -157,7 +157,7 @@ module Shuttle
       if res.failure?
         error "Failed to checkout code. Reason: #{res.output}"
       else
-        ssh.run("cd #{release_path} && rm -rf $(find . | grep .git)")
+        ssh.run("cd #{release_path} && rm -rf $(find . -name .git)")
         ssh.run("cd #{release_path} && rm -rf $(find . -name .svn)")
       end
 
