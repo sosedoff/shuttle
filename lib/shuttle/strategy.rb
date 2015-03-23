@@ -78,7 +78,7 @@ module Shuttle
         end
 
         log "Fetching latest code"
-        res = ssh.run "cd #{scm_path} && git pull origin #{branch}"
+        res = ssh.run "cd #{scm_path} && git fetch"
 
         if res.failure?
           error "Unable to fetch latest code: #{res.output}"
@@ -94,13 +94,8 @@ module Shuttle
 
       ssh.run("cd #{scm_path} && git fetch")
 
-      # Make sure to pull changes from current non-master branch
-      if branch != 'master'
-        ssh.run("cd #{scm_path} && git pull origin #{branch}")
-      end
-
       log "Using branch '#{branch}'"
-      result = ssh.run("cd #{scm_path} && git checkout -m #{branch}")
+      result = ssh.run("cd #{scm_path} && git checkout -b #{branch}")
 
       if result.failure?
         error "Failed to checkout #{branch}: #{result.output}"
