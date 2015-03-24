@@ -92,10 +92,10 @@ module Shuttle
         end
       end
 
-      ssh.run("cd #{scm_path} && git fetch")
+      ssh.run("cd #{scm_path} && git fetch #{config.app.git} #{branch}:#{branch} --force")
 
       log "Using branch '#{branch}'"
-      result = ssh.run("cd #{scm_path} && git checkout -b #{branch}")
+      result = ssh.run("cd #{scm_path} && git checkout #{branch}")
 
       if result.failure?
         error "Failed to checkout #{branch}: #{result.output}"
