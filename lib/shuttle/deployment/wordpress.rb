@@ -63,6 +63,7 @@ module Shuttle
       activate_theme
 
       link_release
+      cleanup_releases
     end
 
     def check_dependencies
