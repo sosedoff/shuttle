@@ -412,4 +412,4 @@ bundle exec rake test
 
 The MIT License
 
-Copyright (c) 2012-2014 Dan Sosedoff
+Copyright (c) 2012-2015 Dan Sosedoff
